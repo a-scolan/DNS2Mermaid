@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const { execSync } = require('child_process');
 const tls = require('tls'); // Module natif Node.js pour SSL/TLS
 
@@ -1771,8 +1772,6 @@ const checkHTTPAvailability = (fqdn, ip, view, timeout = 5000, enableSSL = false
 
 // --- FONCTION POUR GÉNÉRER LE NOM DE DOSSIER AVEC TIMESTAMP ---
 const generateOutputDirName = (inputPath) => {
-    const path = require('path');
-    
     // Extraire le nom de base du fichier (sans extension)
     const baseName = path.basename(inputPath, path.extname(inputPath));
     
@@ -1792,8 +1791,6 @@ const generateOutputDirName = (inputPath) => {
 
 // --- FONCTION DE TRAITEMENT D'UN FICHIER CSV ---
 const processCSVFile = async (inputPath, outputDir) => {
-    const path = require('path');
-    
     // Créer le dossier de sortie si nécessaire
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
@@ -3494,8 +3491,6 @@ const processCSVFile = async (inputPath, outputDir) => {
 
 // --- FONCTION PRINCIPALE ---
 (async () => {
-    const path = require('path');
-    
     try {
         if (BATCH_FOLDER) {
             // Mode batch : traiter tous les CSV du dossier
