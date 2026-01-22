@@ -1,0 +1,2 @@
+TTL;Name;Type;Value;View;Alertes techniques DNS Urgente;Alertes techniques DNS Importante;Alertes techniques DNS Mineure;SSL_Status;SSL_Expiry_Days;SSL_Issuer;HTTP_Status;HTTPS_Status;HTTP_Response_Time;HTTPS_Response_Time;IP_Type;IP_Count;View_Type;Is_Orphan;Points_To;Resolved_IPs
+3600;example.com;A;203.0.113.1;default;;;MISSING_IPV6;;;;Error: Timeout;Error: Timeout;;;IPv4;1;Default;No;;
