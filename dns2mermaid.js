@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const { execSync } = require('child_process');
 const tls = require('tls'); // Module natif Node.js pour SSL/TLS
 
@@ -28,6 +29,8 @@ OPTIONS:
   --no-csv-report           Désactiver génération du rapport CSV enrichi
   
   --folder <dir>            Traiter tous les CSV d'un dossier (génère sous-dossiers)
+  --output-dir <dir>        Dossier de sortie personnalisé (écrase comportement par défaut)
+  --no-timestamp            Désactiver suffixe datetime (défaut: activé)
   --svg <file>              Fichier SVG de sortie (défaut: output.svg)
   --legend-svg <file>       Légende SVG de sortie (défaut: legend.svg)
   --no-export               Désactiver l'export SVG
@@ -55,34 +58,35 @@ OPTIONS:
   -h, --help                Afficher cette aide
 
 EXEMPLES:
-  node dns2mermaid.js
-  node dns2mermaid.js -i zones.csv -o diagram.mmd
+  node dns2mermaid.js -i production-dns.csv     # Crée production-dns_20260122_143025/
+  node dns2mermaid.js -i zones.csv --no-timestamp  # Comportement original (output.mmd)
+  node dns2mermaid.js -i zones.csv --output-dir ./custom-dir  # Dossier personnalisé
   node dns2mermaid.js --no-export --direction LR
-  node dns2mermaid.js --folder ./my-dns-zones         # Traiter tous les CSV du dossier
-  node dns2mermaid.js --no-ssl-check           # Désactiver validation SSL
-  node dns2mermaid.js --no-http-check          # Désactiver validation HTTP/HTTPS
-  node dns2mermaid.js --ssl-port 8443          # Port SSL personnalisé
-  node dns2mermaid.js --ssl-no-timeout-errors  # Masquer timeouts SSL
-  node dns2mermaid.js --email-validation       # Valider SPF/DKIM/DMARC
-  node dns2mermaid.js --compact-layout         # Layout compact (gros subgraphs)
+  node dns2mermaid.js --folder ./my-dns-zones   # Traiter tous les CSV du dossier
+  node dns2mermaid.js --no-ssl-check            # Désactiver validation SSL
+  node dns2mermaid.js --no-http-check           # Désactiver validation HTTP/HTTPS
+  node dns2mermaid.js --ssl-port 8443           # Port SSL personnalisé
+  node dns2mermaid.js --ssl-no-timeout-errors   # Masquer timeouts SSL
+  node dns2mermaid.js --email-validation        # Valider SPF/DKIM/DMARC
+  node dns2mermaid.js --compact-layout          # Layout compact (gros subgraphs)
   node dns2mermaid.js --ignore-rules CNAME_CHAIN,TTL_TOO_SHORT  # Ignorer certaines règles
   node dns2mermaid.js -i dns.csv --svg export.svg --background transparent
-  node dns2mermaid.js --no-diagram             # Rapport de validation uniquement
+  node dns2mermaid.js --no-diagram              # Rapport de validation uniquement
 
 MODE BATCH (--folder):
-  Structure générée:
+  Structure générée (avec timestamps par défaut):
     ./my-dns-zones/
       ├── zone1.csv
       ├── zone2.csv
       └── output/
-          ├── zone1/
-          │   ├── diagram.mmd
-          │   ├── diagram.svg
-          │   ├── legend.mmd
+          ├── zone1_20260122_143025/
+          │   ├── output.mmd
+          │   ├── output.svg
           │   ├── legend.svg
-          │   └── validation_report.txt
-          └── zone2/
-              ├── diagram.mmd
+          │   ├── validation_report.txt
+          │   └── analysis_report.csv
+          └── zone2_20260122_143026/
+              ├── output.mmd
               └── ...
 
 VUES DNS (colonne View dans CSV):
@@ -139,6 +143,7 @@ const VALIDATION_FILE = getArg('-r', getArg('--report', 'validation_report.txt')
 const CSV_REPORT_FILE = getArg('--csv-report', 'analysis_report.csv');
 const SVG_FILE = getArg('--svg', 'output.svg');
 const LEGEND_SVG_FILE = getArg('--legend-svg', 'legend.svg');
+const CUSTOM_OUTPUT_DIR = getArg('--output-dir', '');
 
 const ENABLE_IMG_EXPORT = !hasFlag('--no-export');
 const ENABLE_VALIDATION = !hasFlag('--no-validation');
@@ -154,6 +159,7 @@ const HTTP_TIMEOUT = parseInt(getArg('--http-timeout', '5000'), 10);
 const SHOW_ORPHANS = hasFlag('--show-orphans'); // Désactivé par défaut
 const COMPACT_LAYOUT = hasFlag('--compact-layout'); // Désactivé par défaut
 const QUIET_MODE = hasFlag('--quiet');
+const NO_TIMESTAMP = hasFlag('--no-timestamp'); // Désactivé par défaut (timestamps activés)
 
 // Language support (English by default, French with --language fr)
 const LANGUAGE = getArg('--language', getArg('--lang', 'en')).toLowerCase();
@@ -1764,10 +1770,27 @@ const checkHTTPAvailability = (fqdn, ip, view, timeout = 5000, enableSSL = false
     });
 };
 
+// --- FONCTION POUR GÉNÉRER LE NOM DE DOSSIER AVEC TIMESTAMP ---
+const generateOutputDirName = (inputPath) => {
+    // Extraire le nom de base du fichier (sans extension)
+    const baseName = path.basename(inputPath, path.extname(inputPath));
+    
+    // Générer le timestamp au format YYYYMMDD_HHMMSS
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const timestamp = `${year}${month}${day}_${hours}${minutes}${seconds}`;
+    
+    // Retourner le nom avec timestamp
+    return `${baseName}_${timestamp}`;
+};
+
 // --- FONCTION DE TRAITEMENT D'UN FICHIER CSV ---
 const processCSVFile = async (inputPath, outputDir) => {
-    const path = require('path');
-    
     // Créer le dossier de sortie si nécessaire
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
@@ -3468,8 +3491,6 @@ const processCSVFile = async (inputPath, outputDir) => {
 
 // --- FONCTION PRINCIPALE ---
 (async () => {
-    const path = require('path');
-    
     try {
         if (BATCH_FOLDER) {
             // Mode batch : traiter tous les CSV du dossier
@@ -3493,7 +3514,14 @@ const processCSVFile = async (inputPath, outputDir) => {
             for (const file of files) {
                 const inputPath = path.join(BATCH_FOLDER, file);
                 const baseName = path.basename(file, '.csv');
-                const outputDir = path.join(BATCH_FOLDER, 'output', baseName);
+                
+                // Générer le nom de dossier avec ou sans timestamp
+                let folderName = baseName;
+                if (!NO_TIMESTAMP) {
+                    folderName = generateOutputDirName(inputPath);
+                }
+                
+                const outputDir = path.join(BATCH_FOLDER, 'output', folderName);
                 
                 const result = await processCSVFile(inputPath, outputDir);
                 results.push(result);
@@ -3516,8 +3544,34 @@ const processCSVFile = async (inputPath, outputDir) => {
             console.log(`${'='.repeat(60)}\n`);
             
         } else {
-            // Mode fichier unique (comportement original)
-            const outputDir = path.dirname(path.resolve(OUTPUT_FILE));
+            // Mode fichier unique
+            let outputDir;
+            
+            if (CUSTOM_OUTPUT_DIR) {
+                // Utiliser le dossier personnalisé spécifié par --output-dir
+                outputDir = path.resolve(CUSTOM_OUTPUT_DIR);
+            } else {
+                // Déterminer si l'utilisateur a fourni un chemin de sortie explicite
+                const hasExplicitOutput = args.includes('-o') || args.includes('--output');
+                
+                if (hasExplicitOutput) {
+                    // Si -o est fourni, utiliser le répertoire spécifié (comportement original)
+                    outputDir = path.dirname(path.resolve(OUTPUT_FILE));
+                } else {
+                    // Sinon, utiliser le comportement par défaut avec/sans timestamp
+                    const inputDir = path.dirname(path.resolve(INPUT_FILE));
+                    
+                    if (!NO_TIMESTAMP) {
+                        // Créer un dossier avec timestamp dans le même répertoire que l'input
+                        const folderName = generateOutputDirName(INPUT_FILE);
+                        outputDir = path.join(inputDir, folderName);
+                    } else {
+                        // Comportement original : utiliser le répertoire courant
+                        outputDir = path.dirname(path.resolve(OUTPUT_FILE));
+                    }
+                }
+            }
+            
             await processCSVFile(INPUT_FILE, outputDir);
         }
         
