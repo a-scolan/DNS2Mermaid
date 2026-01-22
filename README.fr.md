@@ -5,6 +5,10 @@
 [![Node.js](https://img.shields.io/badge/Node.js-v14+-green.svg)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
+> 🌍 **Disponible en plusieurs langues :**
+> - 🇬🇧 [English Demo](https://a-scolan.github.io/DNS2Mermaid/) | [English README](README.md)
+> - 🇫🇷 [Demo Français](https://a-scolan.github.io/DNS2Mermaid/index.fr.html) | [README Français](README.fr.md)
+
 ---
 
 ## 🚀 Démarrage Rapide
