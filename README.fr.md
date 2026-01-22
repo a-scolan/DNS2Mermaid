@@ -129,6 +129,16 @@ node dns2mermaid.js --ssl-no-timeout-errors
 # Mode batch (traiter un dossier entier)
 node dns2mermaid.js --folder ./mes-zones
 
+# Dossier de sortie avec horodatage (comportement par défaut)
+node dns2mermaid.js -i production-dns.csv
+# Crée : production-dns_20260122_143025/
+
+# Désactiver l'horodatage (comportement original)
+node dns2mermaid.js -i dns.csv --no-timestamp
+
+# Dossier de sortie personnalisé
+node dns2mermaid.js -i dns.csv --output-dir ./sortie-perso
+
 # Rapport seul sans diagramme (mode CI/CD)
 node dns2mermaid.js --no-diagram -r report.txt
 
@@ -156,6 +166,8 @@ node dns2mermaid.js --quiet
 | `--scale` | `<number>` | `2` | Échelle export SVG |
 | `--background` | `<color>` | `white` | Couleur fond SVG |
 | `--folder` | `<dir>` | - | Mode batch (traite tous les CSV) |
+| `--output-dir` | `<dir>` | - | **Répertoire de sortie personnalisé (remplace comportement par défaut)** |
+| `--no-timestamp` | - | - | **Désactiver suffixe datetime dans dossiers (activé par défaut)** |
 | `--ssl-port` | `<port>` | `443` | Port SSL à vérifier |
 | `--no-ssl-check` | - | - | Désactiver validation SSL (activée par défaut) |
 | `--ssl-no-timeout-errors` | - | - | Masquer les erreurs de timeout SSL |
@@ -315,6 +327,94 @@ RÈGLES VALIDÉES (17 règles, 3 niveaux):
 ```
 
 📖 **Guide complet des règles RFC** : [DNS_Best_Practices.md](./DNS_Best_Practices.md#-règles-rfc-strictes-à-respecter)
+
+---
+
+## 📂 Organisation des Dossiers de Sortie
+
+### Historique Automatique avec Horodatage
+
+**Par défaut**, les fichiers de sortie sont organisés dans des dossiers horodatés pour maintenir un historique complet des exécutions de validation DNS :
+
+```bash
+# Comportement par défaut (avec horodatage)
+node dns2mermaid.js -i production-dns.csv
+
+# Crée le dossier : production-dns_20260122_143025/
+# ├── output.mmd
+# ├── output.svg
+# ├── legend.svg
+# ├── validation_report.txt
+# └── analysis_report.csv
+
+# Une nouvelle exécution crée un nouveau dossier
+node dns2mermaid.js -i production-dns.csv
+# Crée : production-dns_20260122_154530/
+```
+
+**Format** : `{nom_fichier}_{AAAAMMJJ}_{HHMMSS}/`
+
+### Avantages
+
+1. **📜 Suivi historique** : Conserve l'historique complet de toutes les validations DNS
+2. **🔍 Comparaison** : Comparez facilement les configurations dans le temps
+3. **📊 Piste d'audit** : Maintenez des enregistrements pour la conformité et le dépannage
+4. **✅ Pas d'écrasement** : Évite la perte accidentelle de résultats d'analyses précédentes
+5. **⚡ Exécutions parallèles** : Lancez plusieurs analyses simultanément sans conflits
+
+### Options de Configuration
+
+**Répertoire de sortie personnalisé** :
+```bash
+node dns2mermaid.js -i dns.csv --output-dir ./dossier-perso
+# Sortie vers : ./dossier-perso/
+```
+
+**Désactiver l'horodatage** (comportement original) :
+```bash
+node dns2mermaid.js -i dns.csv --no-timestamp
+# Sortie vers : répertoire courant (ou emplacement -o)
+```
+
+**Chemin de sortie explicite** (contourne l'horodatage) :
+```bash
+node dns2mermaid.js -i dns.csv -o ./rapports/output.mmd
+# Sortie vers : ./rapports/ (sans horodatage)
+```
+
+### Mode Batch
+
+En mode batch (`--folder`), chaque fichier CSV obtient son propre sous-dossier horodaté :
+
+```bash
+node dns2mermaid.js --folder ./mes-zones
+
+# Structure :
+# ./mes-zones/
+#   ├── zone1.csv
+#   ├── zone2.csv
+#   └── output/
+#       ├── zone1_20260122_143025/
+#       │   ├── output.mmd
+#       │   ├── output.svg
+#       │   └── ...
+#       └── zone2_20260122_143026/
+#           ├── output.mmd
+#           └── ...
+```
+
+**Désactiver l'horodatage en mode batch** :
+```bash
+node dns2mermaid.js --folder ./mes-zones --no-timestamp
+# Crée : output/zone1/, output/zone2/, etc.
+```
+
+### Cas d'Usage
+
+- **🔄 Pipelines CI/CD** : Suivez les changements DNS à travers les déploiements
+- **📅 Audits planifiés** : Validation DNS automatisée quotidienne/hebdomadaire avec historiques
+- **🔧 Dépannage** : Comparez l'état actuel aux configurations précédentes
+- **📋 Conformité** : Maintenez une piste d'audit des configurations DNS
 
 ---
 

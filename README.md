@@ -128,6 +128,16 @@ node dns2mermaid.js --ssl-no-timeout-errors
 # Batch mode (process entire folder)
 node dns2mermaid.js --folder ./my-zones
 
+# Output directory with timestamp (default behavior)
+node dns2mermaid.js -i production-dns.csv
+# Creates: production-dns_20260122_143025/
+
+# Disable timestamp (original behavior)
+node dns2mermaid.js -i dns.csv --no-timestamp
+
+# Custom output directory
+node dns2mermaid.js -i dns.csv --output-dir ./custom-output
+
 # Report only without diagram (CI/CD mode)
 node dns2mermaid.js --no-diagram -r report.txt
 
@@ -155,6 +165,8 @@ node dns2mermaid.js --quiet
 | `--scale` | `<number>` | `2` | SVG export scale |
 | `--background` | `<color>` | `white` | SVG background color |
 | `--folder` | `<dir>` | - | Batch mode (process all CSV files) |
+| `--output-dir` | `<dir>` | - | **Custom output directory (overrides default behavior)** |
+| `--no-timestamp` | - | - | **Disable datetime suffix in output folders (enabled by default)** |
 | `--ssl-port` | `<port>` | `443` | SSL port to verify |
 | `--no-ssl-check` | - | - | Disable SSL validation (enabled by default) |
 | `--ssl-no-timeout-errors` | - | - | Hide SSL timeout errors |
@@ -314,6 +326,94 @@ VALIDATED RULES (17 rules, 3 levels):
 ```
 
 📖 **Complete guide to RFC rules**: [DNS_Best_Practices.md](./DNS_Best_Practices.md#-strict-rfc-rules-to-follow)
+
+---
+
+## 📂 Output Folder Organization
+
+### Automatic History Tracking with Timestamps
+
+**By default**, output files are organized in timestamped folders to maintain a complete history of DNS validation runs:
+
+```bash
+# Default behavior (with timestamp)
+node dns2mermaid.js -i production-dns.csv
+
+# Creates folder: production-dns_20260122_143025/
+# ├── output.mmd
+# ├── output.svg
+# ├── legend.svg
+# ├── validation_report.txt
+# └── analysis_report.csv
+
+# Running again creates a new folder
+node dns2mermaid.js -i production-dns.csv
+# Creates: production-dns_20260122_154530/
+```
+
+**Format**: `{inputname}_{YYYYMMDD}_{HHMMSS}/`
+
+### Benefits
+
+1. **📜 History tracking**: Keep complete history of all DNS validation runs
+2. **🔍 Comparison**: Easily compare configurations over time
+3. **📊 Audit trail**: Maintain records for compliance and troubleshooting
+4. **✅ No overwrites**: Prevent accidental loss of previous analysis results
+5. **⚡ Parallel runs**: Run multiple analyses simultaneously without conflicts
+
+### Configuration Options
+
+**Custom output directory**:
+```bash
+node dns2mermaid.js -i dns.csv --output-dir ./custom-folder
+# Outputs to: ./custom-folder/
+```
+
+**Disable timestamps** (original behavior):
+```bash
+node dns2mermaid.js -i dns.csv --no-timestamp
+# Outputs to: current directory (or -o location)
+```
+
+**Explicit output path** (bypasses timestamp):
+```bash
+node dns2mermaid.js -i dns.csv -o ./reports/output.mmd
+# Outputs to: ./reports/ (no timestamp)
+```
+
+### Batch Mode
+
+In batch mode (`--folder`), each CSV file gets its own timestamped subfolder:
+
+```bash
+node dns2mermaid.js --folder ./my-zones
+
+# Structure:
+# ./my-zones/
+#   ├── zone1.csv
+#   ├── zone2.csv
+#   └── output/
+#       ├── zone1_20260122_143025/
+#       │   ├── output.mmd
+#       │   ├── output.svg
+#       │   └── ...
+#       └── zone2_20260122_143026/
+#           ├── output.mmd
+#           └── ...
+```
+
+**Disable timestamps in batch mode**:
+```bash
+node dns2mermaid.js --folder ./my-zones --no-timestamp
+# Creates: output/zone1/, output/zone2/, etc.
+```
+
+### Use Cases
+
+- **🔄 CI/CD pipelines**: Track DNS changes across deployments
+- **📅 Scheduled audits**: Automated daily/weekly DNS validation with historical records
+- **🔧 Troubleshooting**: Compare current state against previous configurations
+- **📋 Compliance**: Maintain audit trail of DNS configurations
 
 ---
 
