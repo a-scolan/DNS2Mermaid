@@ -39,8 +39,8 @@ flowchart LR
 
     subgraph sg_bad_cname_com ["⚠️&nbsp;**bad#8209;cname&period;com**"]
         direction TB
-        node_bad_cname_com_A_203_0_3600_2["<b>A</b>&nbsp;🚨&nbsp;1×CRITICAL&nbsp;|&nbsp;203.0.113.10&nbsp;|&nbsp;TTL:3600"]:::critical
-        node_bad_cname_com_CNAME_targe_3600_1["<b>CNAME</b>&nbsp;🚨&nbsp;2×CRITICAL&nbsp;|&nbsp;target.com&nbsp;|&nbsp;TTL:3600"]:::critical
+        node_bad_cname_com_A_203_0_3600_2["<b>A</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;🚨&nbsp;1×CRITICAL&nbsp;|&nbsp;203.0.113.10&nbsp;|&nbsp;TTL:3600"]:::critical
+        node_bad_cname_com_CNAME_targe_3600_1["<b>CNAME</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;🚨&nbsp;2×CRITICAL&nbsp;|&nbsp;target.com&nbsp;|&nbsp;TTL:3600"]:::critical
     end
     style sg_bad_cname_com fill:#fff5f5,stroke:#ff0000,stroke-width:3px,color:#000
 

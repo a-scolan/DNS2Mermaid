@@ -39,22 +39,22 @@ flowchart LR
 
     subgraph sg_www_example_com ["⚠️&nbsp;**www&period;example&period;com**"]
         direction TB
-        node_www_example_com_CNAME_cdn1__3600_1["<b>CNAME</b>&nbsp;🟢&nbsp;⚠️&nbsp;1×WARN&nbsp;|&nbsp;cdn1.example.com&nbsp;|&nbsp;TTL:3600"]:::externalWarning
+        node_www_example_com_CNAME_cdn1__3600_1["<b>CNAME</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;⚠️&nbsp;1×WARN&nbsp;|&nbsp;cdn1.example.com&nbsp;|&nbsp;TTL:3600"]:::externalWarning
     end
     style sg_www_example_com fill:#fffef5,stroke:#ff8800,stroke-width:2px,color:#000
     subgraph sg_cdn1_example_com ["⚠️&nbsp;**cdn1&period;example&period;com**"]
         direction TB
-        node_cdn1_example_com_CNAME_cdn2__3600_2["<b>CNAME</b>&nbsp;🟢&nbsp;⚠️&nbsp;1×WARN&nbsp;|&nbsp;cdn2.example.com&nbsp;|&nbsp;TTL:3600"]:::externalWarning
+        node_cdn1_example_com_CNAME_cdn2__3600_2["<b>CNAME</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;⚠️&nbsp;1×WARN&nbsp;|&nbsp;cdn2.example.com&nbsp;|&nbsp;TTL:3600"]:::externalWarning
     end
     style sg_cdn1_example_com fill:#fffef5,stroke:#ff8800,stroke-width:2px,color:#000
     subgraph sg_cdn2_example_com ["**cdn2&period;example&period;com**"]
         direction TB
-        node_cdn2_example_com_CNAME_cdn_f_3600_3["<b>CNAME</b>&nbsp;🟢&nbsp;|&nbsp;cdn-final.cloudprovider.com&nbsp;|&nbsp;TTL:3600"]:::external
+        node_cdn2_example_com_CNAME_cdn_f_3600_3["<b>CNAME</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;|&nbsp;cdn-final.cloudprovider.com&nbsp;|&nbsp;TTL:3600"]:::external
     end
     style sg_cdn2_example_com fill:#ffffff,stroke:#999,stroke-width:1px,color:#000
     subgraph sg_cdn_final_cloudprovider_com ["⚠️&nbsp;**cdn#8209;final&period;cloudprovider&period;com**"]
         direction TB
-        node_cdn_final_cloudprovider_com_A_203_0_3600_4["<b>A</b>&nbsp;🟢&nbsp;ℹ️&nbsp;1×INFO&nbsp;|&nbsp;203.0.113.50&nbsp;|&nbsp;TTL:3600"]:::externalInfo
+        node_cdn_final_cloudprovider_com_A_203_0_3600_4["<b>A</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;ℹ️&nbsp;1×INFO&nbsp;|&nbsp;203.0.113.50&nbsp;|&nbsp;TTL:3600"]:::externalInfo
     end
     style sg_cdn_final_cloudprovider_com fill:#fffffa,stroke:#ccaa00,stroke-width:1px,color:#000
 

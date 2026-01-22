@@ -2750,7 +2750,7 @@ const processCSVFile = async (inputPath, outputDir) => {
             }
             report += '═══════════════════════════════════════════════════════════\n\n';
             report += t('date') + new Date().toISOString() + '\n';
-            report += t('source_file') + INPUT_FILE + '\n';
+            report += t('source_file') + inputPath + '\n';
             report += t('domains_analyzed') + Object.keys(domains).length + '\n';
             report += t('violations_detected') + violations.length + '\n';
             

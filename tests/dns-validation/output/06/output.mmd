@@ -39,9 +39,9 @@ flowchart LR
 
     subgraph sg_inconsistent_com ["⚠️&nbsp;**inconsistent&period;com**"]
         direction TB
-        node_inconsistent_com_AAAA_2001__7200_3["<b>AAAA</b>&nbsp;🟢&nbsp;⚠️&nbsp;1×WARN&nbsp;|&nbsp;2001:db8::1&nbsp;|&nbsp;TTL:7200"]:::externalWarning
-        node_inconsistent_com_A_203_0_300_1["<b>A</b>&nbsp;🟢&nbsp;⚠️&nbsp;1×WARN&nbsp;|&nbsp;203.0.113.10&nbsp;|&nbsp;TTL:300"]:::externalWarning
-        node_inconsistent_com_A_203_0_3600_2["<b>A</b>&nbsp;🟢&nbsp;⚠️&nbsp;1×WARN&nbsp;|&nbsp;203.0.113.11&nbsp;|&nbsp;TTL:3600"]:::externalWarning
+        node_inconsistent_com_AAAA_2001__7200_3["<b>AAAA</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;⚠️&nbsp;1×WARN&nbsp;|&nbsp;2001:db8::1&nbsp;|&nbsp;TTL:7200"]:::externalWarning
+        node_inconsistent_com_A_203_0_300_1["<b>A</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;⚠️&nbsp;1×WARN&nbsp;|&nbsp;203.0.113.10&nbsp;|&nbsp;TTL:300"]:::externalWarning
+        node_inconsistent_com_A_203_0_3600_2["<b>A</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;⚠️&nbsp;1×WARN&nbsp;|&nbsp;203.0.113.11&nbsp;|&nbsp;TTL:3600"]:::externalWarning
     end
     style sg_inconsistent_com fill:#fffef5,stroke:#ff8800,stroke-width:2px,color:#000
 
