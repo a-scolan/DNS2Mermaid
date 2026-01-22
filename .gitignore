@@ -1,6 +1,7 @@
 */*
 !tests/*
 !demo/*
+!.github/*
 
 # Rapports de tests consolidés (racine uniquement)
 /test-report-*.txt
