@@ -6,6 +6,9 @@
 # Rapports de tests consolidés (racine uniquement)
 /test-report-*.txt
 
+# Test output files
+tests/**/analysis_report.csv
+
 # ---> Node
 # Logs
 logs

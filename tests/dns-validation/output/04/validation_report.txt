@@ -1,17 +1,24 @@
 ═══════════════════════════════════════════════════════════
-           RAPPORT DE VALIDATION DNS RFC
+           DNS RFC VALIDATION REPORT
 ═══════════════════════════════════════════════════════════
 
-Date: 2025-12-11T15:17:51.089Z
-Fichier source: C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\tests\dns-validation\04_critical_spf_too_permissive.csv
-Domaines analysés: 1
-Violations détectées: 3
+Date: 2026-01-22T10:34:51.004Z
+Source file: /home/runner/work/DNS2Mermaid/DNS2Mermaid/tests/dns-validation/04_critical_spf_too_permissive.csv
+Domains analyzed: 1
+Violations detected: 3
 
-🚨 Violations BLOQUANTES (CRITICAL): 2
-⚠️  Problèmes à corriger (WARNING): 0
-ℹ️  Bonnes pratiques (INFO): 1
+HTTP/HTTPS AVAILABILITY: 1 domain(s) tested (HTTPS-FIRST strategy)
+✅ Accessible (2xx): 0
+🔀 Redirects (3xx): 0
+⚠️  Client errors (4xx): 0
+🚨 Server errors (5xx): 0
+❌ Connection errors: 1
 
-📊 BILAN PAR RÈGLE:
+🚨 BLOCKING VIOLATIONS (CRITICAL): 2
+⚠️  ISSUES TO FIX (WARNING): 0
+ℹ️  BEST PRACTICES (INFO): 1
+
+RULE SUMMARY:
 
    ℹ️ MISSING_IPV6: 1 violation(s)
    🚨 SPF_TOO_PERMISSIVE: 1 violation(s)
@@ -19,61 +26,92 @@ Violations détectées: 3
 
 ───────────────────────────────────────────────────────────
 
-🚨 VIOLATIONS BLOQUANTES (À CORRIGER IMMÉDIATEMENT):
+🚨 BLOCKING VIOLATIONS (TO FIX IMMEDIATELY):
 
 1. [SPF_TOO_PERMISSIVE] permissive.com
    SPF trop permissif (+all) dans vue publique - Permet à n'importe qui d'envoyer des emails
-   Référence: RFC 7208 Section 5.1 (Mécanisme all)
-   Enregistrements affectés: TXT v=spf1 +all
+   Reference: RFC 7208 Section 5.1 (Mécanisme all)
+   Affected records: TXT v=spf1 +all
 
 2. [SPF_ALL_PERMISSIVE] permissive.com
    SPF avec +all en vue publique permet à n'importe qui d'envoyer des emails
-   Référence: RFC 7208 Section 5.1
-   Enregistrements affectés: TXT v=spf1 +all
+   Reference: RFC 7208 Section 5.1
+   Affected records: TXT v=spf1 +all
 
 
-ℹ️  RECOMMANDATIONS (BONNES PRATIQUES):
+ℹ️  RECOMMENDATIONS (BEST PRACTICES):
 
 1. [MISSING_IPV6] permissive.com
    Enregistrement A sans AAAA correspondant (bonne pratique: supporter IPv6)
-   Référence: Bonne pratique : RFC 8200 (IPv6 Specification)
-   Enregistrements affectés: A 203.0.113.10
+   Reference: Bonne pratique : RFC 8200 (IPv6 Specification)
+   Affected records: A 203.0.113.10
 
 
 ───────────────────────────────────────────────────────────
-RÈGLES VALIDÉES (27 règles (19 DNS + 10 Email), 3 niveaux):
+RULES VALIDATED (27 rules (19 DNS + 10 Email), 3 levels):
 
-🚨 BLOQUANTES (CRITICAL) - Violations RFC:
-1. CNAME_COEXISTENCE: Un CNAME ne peut coexister avec d'autres types (RFC 1034)
-2. CNAME_ON_APEX: CNAME interdit sur zone apex/domaine racine (RFC 1912)
-3. CNAME_LOOP: Un CNAME ne peut pointer vers lui-même
-4. MX_TO_CNAME: Les MX ne peuvent pointer vers des CNAMEs (RFC 2181)
-5. NS_TO_CNAME: Les NS ne peuvent pointer vers des CNAMEs (RFC 2181)
-6. MX_NO_GLUE / NS_NO_GLUE: MX/NS doivent pointer vers noms avec A/AAAA
-7. SPF_TOO_PERMISSIVE: SPF avec +all autorise tout le monde
-8. SPF_ALL_PERMISSIVE: SPF avec +all (email validation)
-9. DMARC_MISSING_WITH_PUBLIC_MX: DMARC manquant avec MX publics
+🚨 BLOCKING (CRITICAL) - RFC Violations:
+1. CNAME_COEXISTENCE: A CNAME cannot coexist with other record types (RFC 1034)
+2. CNAME_ON_APEX: CNAME forbidden on zone apex/root domain (RFC 1912)
+3. CNAME_LOOP: A CNAME cannot point to itself
+4. MX_TO_CNAME: MX records cannot point to CNAMEs (RFC 2181)
+5. NS_TO_CNAME: NS records cannot point to CNAMEs (RFC 2181)
+6. MX_NO_GLUE / NS_NO_GLUE: MX/NS must point to names with A/AAAA records
+7. SPF_TOO_PERMISSIVE: SPF with +all allows everyone
+8. SPF_ALL_PERMISSIVE: SPF with +all (email validation)
+9. DMARC_MISSING_WITH_PUBLIC_MX: DMARC missing with public MX
 
-⚠️  IMPORTANTES (WARNING) - À corriger rapidement:
-10. CNAME_CHAIN: Les CNAMEs chaînés dégradent les performances (RFC 2181)
-11. INCONSISTENT_TTL: TTL incohérents causent comportement imprévisible
-12. TTL_TOO_SHORT: TTL < 60s génère une charge DNS excessive
-13. SPF_NEUTRAL: SPF avec ?all offre peu de protection
-14. MX_ORPHAN / NS_ORPHAN: Pointe vers un nom non résolu
-15. VIEW_SEGREGATION_PRIVATE_EXTERNAL: IP privée RFC 1918 exposée en vue externe
-16. SPF_TOO_MANY_LOOKUPS: SPF avec >10 lookups DNS
-17. MX_NOT_IN_SPF: Serveurs MX absents du SPF
-18. DKIM_INVALID_FORMAT: Format DKIM invalide
-19. DKIM_WEAK_KEY: Clé RSA <1024 bits
-20. DMARC_NO_REPORTING: Pas d'adresse rua/ruf
+⚠️  IMPORTANT (WARNING) - To fix quickly:
+10. CNAME_CHAIN: Chained CNAMEs degrade performance (RFC 2181)
+11. INCONSISTENT_TTL: Inconsistent TTLs cause unpredictable behavior
+12. TTL_TOO_SHORT: TTL < 60s generates excessive DNS load
+13. SPF_NEUTRAL: SPF with ?all provides little protection
+14. MX_ORPHAN / NS_ORPHAN: Points to an unresolved name
+15. VIEW_SEGREGATION_PRIVATE_EXTERNAL: Private RFC 1918 IP exposed in external view
+16. SPF_TOO_MANY_LOOKUPS: SPF with >10 DNS lookups
+17. MX_NOT_IN_SPF: MX servers missing from SPF
+18. DKIM_INVALID_FORMAT: Invalid DKIM format
+19. DKIM_WEAK_KEY: RSA key <1024 bits
+20. DMARC_NO_REPORTING: No rua/ruf address
 
-ℹ️  RECOMMANDATIONS (INFO) - Bonnes pratiques:
-25. MISSING_IPV6: Enregistrement A sans AAAA (moderniser)
-26. TTL_TOO_LONG: TTL > 86400s rend les changements lents
-27. WILDCARD_RESTRICTION: Attention wildcards avec certains types
-28. DUPLICATE_RECORD: Enregistrements identiques redondants
-29. CNAME_ORPHAN: CNAME pointe vers un nom absent du dataset (vérifier si externe)
-30. INCONSISTENT_TTL_MULTIVIEW: Même enregistrement avec TTL différents selon les vues
-31. DMARC_POLICY_NONE: DMARC en mode monitoring (p=none)
-32. DKIM_MISSING: Pas de DKIM détecté
-33. AUTODISCOVER_MISSING: Pas d'autodiscover/autoconfig
+ℹ️  RECOMMENDATIONS (INFO) - Best practices:
+25. MISSING_IPV6: A record without AAAA (modernize)
+26. TTL_TOO_LONG: TTL > 86400s makes changes slow
+27. WILDCARD_RESTRICTION: Caution with wildcards and certain types
+28. DUPLICATE_RECORD: Redundant identical records
+29. CNAME_ORPHAN: CNAME points to a name absent from dataset (check if external)
+30. INCONSISTENT_TTL_MULTIVIEW: Same record with different TTLs across views
+31. DMARC_POLICY_NONE: DMARC in monitoring mode (p=none)
+32. DKIM_MISSING: No DKIM detected
+33. AUTODISCOVER_MISSING: No autodiscover/autoconfig
+
+═══════════════════════════════════════════════════════════
+          HTTP/HTTPS DOMAIN AVAILABILITY
+═══════════════════════════════════════════════════════════
+
+Strategy: HTTPS-FIRST (tests HTTPS first, HTTP only if HTTPS fails)
+Note: DNS resolution forced according to CSV file (no system resolution)
+
+
+❌ ERREURS DE CONNEXION:
+
+1. permissive.com
+   IP: 203.0.113.10 | Vue(s): ext
+   HTTPS: Timeout
+   HTTP: Timeout
+   Note: Aucun protocole n'a répondu
+
+
+
+═══════════════════════════════════════════════════════════════
+       DOMAINES HTTP/HTTPS NÉCESSITANT ATTENTION
+═══════════════════════════════════════════════════════════════
+
+❌ DOMAINES INACCESSIBLES (Erreurs de connexion):
+
+1. permissive.com
+   IP: 203.0.113.10 | Vue(s): ext
+   HTTPS: Timeout
+   HTTP: Timeout
+   Note: Aucun protocole n'a répondu
+
