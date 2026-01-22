@@ -3,7 +3,7 @@
 **Outil complet pour visualiser, valider et documenter vos configurations DNS.**
 
 [![Node.js](https://img.shields.io/badge/Node.js-v14+-green.svg)](https://nodejs.org/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
 
 > 🌍 **Disponible en plusieurs langues :**
 > - 🇬🇧 [English Demo](https://a-scolan.github.io/DNS2Mermaid/) | [English README](README.md)
@@ -17,8 +17,8 @@
 
 ```bash
 # 1. Cloner le dépôt
-git clone https://github.com/your-repo/dns2mermaid.git
-cd dns2mermaid
+git clone https://github.com/a-scolan/DNS2Mermaid.git
+cd DNS2Mermaid
 
 # 2. Installer les dépendances
 npm install

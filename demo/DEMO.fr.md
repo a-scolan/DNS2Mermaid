@@ -98,8 +98,8 @@ Internal View: 86400s (24 hours)
 
 ```bash
 # Clone repository
-git clone https://github.com/your-repo/dns2mermaid.git
-cd dns2mermaid
+git clone https://github.com/a-scolan/DNS2Mermaid.git
+cd DNS2Mermaid
 
 # Install dependencies
 npm install
@@ -313,14 +313,14 @@ The file [`analysis_report.csv`](./analysis_report.csv) contains all DNS records
 ## 🔗 Useful Links
 
 - 📖 [Complete Documentation](../README.md)
-- 🐛 [Report a Bug](https://github.com/your-repo/dns2mermaid/issues)
-- 💡 [Request Feature](https://github.com/your-repo/dns2mermaid/issues/new)
-- 📦 [Releases](https://github.com/your-repo/dns2mermaid/releases)
+- 🐛 [Report a Bug](https://github.com/a-scolan/DNS2Mermaid/issues)
+- 💡 [Request Feature](https://github.com/a-scolan/DNS2Mermaid/issues/new)
+- 📦 [Releases](https://github.com/a-scolan/DNS2Mermaid/releases)
 
 ---
 
 ## 📄 License
 
-MIT License - Powered by Node.js & Mermaid
+AGPL-3.0 License - Powered by Node.js & Mermaid
 
 **Version**: 1.1.0
