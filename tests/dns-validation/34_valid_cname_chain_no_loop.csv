@@ -1,0 +1,9 @@
+# Test 34 : CNAME_LOOP - Chaîne valide sans boucle
+# A → B → C → IP (chaîne linéaire se terminant par A record)
+# Résultat attendu : Peut déclencher CNAME_CHAIN (WARNING) mais PAS CNAME_LOOP
+
+TTL,Name,Type,Value,View
+3600,start.example.com,CNAME,middle.example.com,ext
+3600,middle.example.com,CNAME,end.example.com,ext
+3600,end.example.com,A,203.0.113.10,ext
+3600,end.example.com,AAAA,2001:db8::10,ext

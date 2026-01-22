@@ -1,0 +1,82 @@
+---
+config:
+  flowchart:
+    htmlLabels: true
+    curve: basis
+    padding: 25
+    diagramPadding: 8
+    wrappingWidth: 200
+    rankSpacing: 50
+    nodeSpacing: 50
+    useMaxWidth: false
+---
+flowchart LR
+    classDef internal fill:#b3d9ff,stroke:#0066cc,stroke-width:2px,color:black;
+    classDef external fill:#b3ffb3,stroke:#006600,stroke-width:1px,color:black;
+    classDef both fill:#d9b3ff,stroke:#8800cc,stroke-width:2px,color:black;
+    classDef target fill:#f9f9f9,stroke:#999,stroke-dasharray: 5 5;
+    classDef legendBox fill:#fafafa,stroke:#333,stroke-width:1px,color:black;
+    classDef critical fill:#ffe0e0,stroke:#ff0000,stroke-width:5px,color:black,stroke-dasharray: 10 5;
+    classDef internalWarning fill:#b3d9ff,stroke:#ff8800,stroke-width:4px,color:black;
+    classDef externalWarning fill:#b3ffb3,stroke:#ff8800,stroke-width:4px,color:black;
+    classDef bothWarning fill:#d9b3ff,stroke:#ff8800,stroke-width:4px,color:black;
+    classDef internalInfo fill:#b3d9ff,stroke:#ccaa00,stroke-width:3px,color:black,stroke-dasharray: 5 5;
+    classDef externalInfo fill:#b3ffb3,stroke:#ccaa00,stroke-width:3px,color:black,stroke-dasharray: 5 5;
+    classDef bothInfo fill:#d9b3ff,stroke:#ccaa00,stroke-width:3px,color:black,stroke-dasharray: 5 5;
+    classDef ipNode fill:#e8e8e8,stroke:#666,stroke-width:2px,color:black;
+    classDef ipPrivate fill:#b3d9ff,stroke:#0066cc,stroke-width:2px,color:black;
+    classDef ipPublic fill:#b3ffb3,stroke:#006600,stroke-width:2px,color:black;
+    classDef sslValid fill:#d4edda,stroke:#28a745,stroke-width:2px,color:black;
+    classDef sslWarning fill:#fff3cd,stroke:#ffc107,stroke-width:3px,color:black;
+    classDef sslCritical fill:#f8d7da,stroke:#dc3545,stroke-width:4px,color:black;
+    classDef sslError fill:#e2e3e5,stroke:#6c757d,stroke-width:2px,color:black,stroke-dasharray: 5 5;
+    classDef leakedExternal fill:#ffebee,stroke:#e91e63,stroke-width:4px,color:black;
+    classDef httpStatusOk fill:#c8e6c9,stroke:#2e7d32,stroke-width:1px,color:#000,font-size:9px;
+    classDef httpStatusRedirect fill:#fff9c4,stroke:#f57c00,stroke-width:1px,color:#000,font-size:9px;
+    classDef httpStatusError fill:#ffccbc,stroke:#d84315,stroke-width:1px,color:#000,font-size:9px;
+    classDef httpStatusKo fill:#ffebee,stroke:#c62828,stroke-width:1px,color:#000,font-size:9px;
+    classDef emailDerived fill:#fff9e6,stroke:#ff9800,stroke-width:1px,color:black,stroke-dasharray: 3 3;
+
+    subgraph sg_example_com ["**example&period;com**"]
+        direction TB
+        node_example_com_AAAA_2001__3600_2["<b>AAAA</b>&nbsp;🟢&nbsp;|&nbsp;2001:db8::10&nbsp;|&nbsp;TTL:3600"]:::external
+        node_example_com_A_203_0_3600_1["<b>A</b>&nbsp;🟢&nbsp;|&nbsp;203.0.113.10&nbsp;|&nbsp;TTL:3600"]:::external
+        node_example_com_MX_10_ma_3600_3["<b>MX</b>&nbsp;🟢&nbsp;|&nbsp;10&nbsp;mail.example.com&nbsp;|&nbsp;TTL:3600"]:::external
+        node_example_com_TXT_v_spf_3600_4["<b>TXT</b>&nbsp;🟢&nbsp;|&nbsp;v=spf1&nbsp;mx&nbsp;-all&nbsp;|&nbsp;TTL:3600"]:::external
+        subgraph sg__dmarc_example_com ["🛡️&nbsp;&lowbar;dmarc&period;example&period;com"]
+            direction TB
+            node__dmarc_example_com_TXT_v_DMA_3600_8["<b>TXT</b>&nbsp;🟢&nbsp;|&nbsp;v=DMARC1;&nbsp;p=quarantine;&nbsp;rua=mailto:dmarc@example.com&nbsp;|&nbsp;TTL:3600"]:::external
+        end
+        style sg__dmarc_example_com fill:#fff9e6,stroke:#ff9800,stroke-width:1px,color:#000,stroke-dasharray: 3 3
+    end
+    style sg_example_com fill:#ffffff,stroke:#999,stroke-width:1px,color:#000
+    subgraph sg_www_example_com ["**www&period;example&period;com**"]
+        direction TB
+        node_www_example_com_CNAME_examp_3600_5["<b>CNAME</b>&nbsp;🟢&nbsp;|&nbsp;example.com&nbsp;|&nbsp;TTL:3600"]:::external
+    end
+    style sg_www_example_com fill:#ffffff,stroke:#999,stroke-width:1px,color:#000
+    subgraph sg_mail_example_com ["**mail&period;example&period;com**"]
+        direction TB
+        node_mail_example_com_AAAA_2001__3600_7["<b>AAAA</b>&nbsp;🟢&nbsp;|&nbsp;2001:db8::20&nbsp;|&nbsp;TTL:3600"]:::external
+        node_mail_example_com_A_203_0_3600_6["<b>A</b>&nbsp;🟢&nbsp;|&nbsp;203.0.113.20&nbsp;|&nbsp;TTL:3600"]:::external
+    end
+    style sg_mail_example_com fill:#ffffff,stroke:#999,stroke-width:1px,color:#000
+
+    %% --- Relations CNAME/MX/NS ---
+    node_example_com_MX_10_ma_3600_3 -->|MX| node_mail_example_com_AAAA_2001__3600_7
+    node_example_com_MX_10_ma_3600_3 -->|MX| node_mail_example_com_A_203_0_3600_6
+    node_www_example_com_CNAME_examp_3600_5 -->|CNAME| sg_example_com
+
+    %% --- Nœuds IP ---
+    subgraph ip_cluster ["🌐 Adresses IP"]
+        direction LR
+        node_IP_203_0_113_10[["🌐&nbsp;<b>IPv4</b>&nbsp;Publique&nbsp;|&nbsp;203.0.113.10&nbsp;|&nbsp;1×utilisé"]]:::ipPublic
+        node_IP_2001_db8__10[["🌐&nbsp;<b>IPv6</b>&nbsp;Publique&nbsp;|&nbsp;2001:db8::10&nbsp;|&nbsp;1×utilisé"]]:::ipPublic
+        node_IP_203_0_113_20[["🌐&nbsp;<b>IPv4</b>&nbsp;Publique&nbsp;|&nbsp;203.0.113.20&nbsp;|&nbsp;1×utilisé"]]:::ipPublic
+        node_IP_2001_db8__20[["🌐&nbsp;<b>IPv6</b>&nbsp;Publique&nbsp;|&nbsp;2001:db8::20&nbsp;|&nbsp;1×utilisé"]]:::ipPublic
+    end
+    style ip_cluster fill:#f9f9f9,stroke:#999,stroke-width:1px,stroke-dasharray: 3 3,color:#000
+    node_example_com_A_203_0_3600_1 -->|resolves| node_IP_203_0_113_10
+    node_example_com_AAAA_2001__3600_2 -->|resolves| node_IP_2001_db8__10
+    node_mail_example_com_A_203_0_3600_6 -->|resolves| node_IP_203_0_113_20
+    node_mail_example_com_AAAA_2001__3600_7 -->|resolves| node_IP_2001_db8__20

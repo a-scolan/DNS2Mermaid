@@ -1,0 +1,5 @@
+TTL,Name,Type,Value,View
+3600,www.example.com,CNAME,cdn1.example.com,ext
+3600,cdn1.example.com,CNAME,cdn2.example.com,ext
+3600,cdn2.example.com,CNAME,cdn-final.cloudprovider.com,ext
+3600,cdn-final.cloudprovider.com,A,203.0.113.50,ext

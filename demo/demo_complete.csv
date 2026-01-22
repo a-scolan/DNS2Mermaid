@@ -1,0 +1,12 @@
+TTL,Name,Type,Value,View
+3600,acme-corp.com,A,198.51.100.10,ext
+3600,acme-corp.com,MX,10 mail.acme-corp.com,ext
+3600,acme-corp.com,NS,ns1.acme-corp.com,ext
+3600,acme-corp.com,TXT,"v=spf1 mx ip4:198.51.100.0/24 -all",ext
+3600,www.acme-corp.com,CNAME,acme-corp.com,ext
+3600,blog.acme-corp.com,CNAME,www.acme-corp.com,ext
+3600,mail.acme-corp.com,A,198.51.100.20,ext
+3600,ns1.acme-corp.com,A,198.51.100.30,ext
+3600,api.acme-corp.com,A,198.51.100.40,ext
+86400,api.acme-corp.com,A,10.0.1.40,int
+3600,_dmarc.acme-corp.com,TXT,"v=DMARC1; p=quarantine; rua=mailto:dmarc@acme-corp.com",ext

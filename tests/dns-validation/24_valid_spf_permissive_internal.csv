@@ -1,0 +1,13 @@
+# Test 24 : SPF_TOO_PERMISSIVE valide en vue interne
+# SPF +all en vue interne seulement (confiance interne) = VALIDE
+# Résultat attendu : AUCUNE violation SPF_TOO_PERMISSIVE
+
+view,rrName,rrType,rrTtl,rrValue
+int,mail.company.com,TXT,3600,v=spf1 +all
+int,mail.company.com,MX,3600,10 mail.company.com
+int,mail.company.com,A,3600,10.0.1.50
+int,mail.company.com,AAAA,3600,fd00::50
+ext,mail.company.com,TXT,3600,v=spf1 include:provider.net -all
+ext,mail.company.com,MX,3600,10 mail.company.com
+ext,mail.company.com,A,3600,203.0.113.50
+ext,mail.company.com,AAAA,3600,2001:db8::50

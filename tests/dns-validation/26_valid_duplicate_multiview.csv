@@ -1,0 +1,9 @@
+# Test 26 : DUPLICATE_RECORD valide en multi-view
+# Même enregistrement dans vues différentes = VALIDE (pas de duplication)
+# Résultat attendu : AUCUNE violation DUPLICATE_RECORD
+
+view,rrName,rrType,rrTtl,rrValue
+ext,www.company.com,A,3600,203.0.113.100
+ext,www.company.com,AAAA,3600,2001:db8::100
+int,www.company.com,A,3600,203.0.113.100
+int,www.company.com,AAAA,3600,2001:db8::100

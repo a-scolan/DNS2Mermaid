@@ -1,0 +1,4 @@
+TTL,Name,Type,Value,View
+3600,invalid-multiview.com,CNAME,target.com,ext
+3600,invalid-multiview.com,A,203.0.113.10,ext
+3600,invalid-multiview.com,AAAA,2001:db8::1,ext

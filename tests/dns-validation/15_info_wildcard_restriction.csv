@@ -1,0 +1,4 @@
+TTL,Name,Type,Value,View
+3600,*.wildcard.com,MX,10 mail.wildcard.com,ext
+3600,*.wildcard.com,A,203.0.113.10,ext
+3600,mail.wildcard.com,A,203.0.113.20,ext

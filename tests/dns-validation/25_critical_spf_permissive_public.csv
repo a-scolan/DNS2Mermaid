@@ -1,0 +1,9 @@
+# Test 25 : SPF_TOO_PERMISSIVE violation en vue publique
+# SPF +all en vue externe = VIOLATION CRITIQUE
+# Résultat attendu : 1 violation CRITICAL SPF_TOO_PERMISSIVE
+
+view,rrName,rrType,rrTtl,rrValue
+ext,mail.company.com,TXT,3600,v=spf1 +all
+ext,mail.company.com,MX,3600,10 mail.company.com
+ext,mail.company.com,A,3600,203.0.113.50
+ext,mail.company.com,AAAA,3600,2001:db8::50

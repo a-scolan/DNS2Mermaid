@@ -1,0 +1,4 @@
+# Test : Domaine inexistant (erreur de connexion)
+# IP privée qui ne répondra pas
+View,Name,Type,TTL,Value
+int,internal-only.test,A,3600,192.168.1.100

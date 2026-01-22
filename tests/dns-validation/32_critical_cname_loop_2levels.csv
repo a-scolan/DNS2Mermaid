@@ -1,0 +1,7 @@
+# Test 32 : CNAME_LOOP - Boucle à 2 CNAMEs
+# A → B → A (boucle circulaire entre 2 domaines)
+# Résultat attendu : 2 violations CRITICAL CNAME_LOOP (une pour chaque domaine)
+
+TTL,Name,Type,Value,View
+3600,loop-a.example.com,CNAME,loop-b.example.com,ext
+3600,loop-b.example.com,CNAME,loop-a.example.com,ext

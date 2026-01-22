@@ -1,0 +1,12 @@
+TTL,Name,Type,Value,View,Violations,Violation_Severity,Violation_Count,SSL_Status,SSL_Expiry_Days,SSL_Issuer,HTTP_Status,HTTPS_Status,HTTP_Response_Time,HTTPS_Response_Time,IP_Type,IP_Count,View_Type,Is_Orphan,Points_To,Resolved_IPs
+3600,acme-corp.com,A,198.51.100.10,ext,,,,,,,Error: Timeout,Error: Timeout,,,IPv4,1,External,No,,
+3600,acme-corp.com,MX,10 mail.acme-corp.com,ext,,,,,,,Error: Timeout,Error: Timeout,,,,,External,No,mail.acme-corp.com,
+3600,acme-corp.com,NS,ns1.acme-corp.com,ext,,,,,,,Error: Timeout,Error: Timeout,,,,,External,No,ns1.acme-corp.com,
+3600,acme-corp.com,TXT,v=spf1 mx ip4:198.51.100.0/24 -all,ext,,,,,,,Error: Timeout,Error: Timeout,,,,,External,No,,
+3600,www.acme-corp.com,CNAME,acme-corp.com,ext,,,,,,,Error: Timeout,Error: Timeout,,,,,External,No,acme-corp.com,198.51.100.10
+3600,blog.acme-corp.com,CNAME,www.acme-corp.com,ext,,,,,,,Error: Timeout,Error: Timeout,,,,,External,No,www.acme-corp.com,198.51.100.10
+3600,mail.acme-corp.com,A,198.51.100.20,ext,,,,,,,Error: Timeout,Error: Timeout,,,IPv4,1,External,No,,
+3600,ns1.acme-corp.com,A,198.51.100.30,ext,,,,,,,Error: Timeout,Error: Timeout,,,IPv4,1,External,No,,
+3600,api.acme-corp.com,A,198.51.100.40,ext,,,,,,,Error: Timeout,Error: Timeout,,,IPv4,1,External,No,,
+86400,api.acme-corp.com,A,10.0.1.40,int,,,,,,,Error: Timeout,Error: Timeout,,,IPv4 (Private RFC1918),1,Internal,No,,
+3600,_dmarc.acme-corp.com,TXT,v=dmarc1; p=quarantine; rua=mailto:dmarc@acme-corp.com,ext,,,,,,,,,,,,,External,No,,

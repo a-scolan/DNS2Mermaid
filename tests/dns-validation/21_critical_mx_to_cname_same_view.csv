@@ -1,0 +1,9 @@
+# Test 21 : MX_TO_CNAME violation dans la même vue
+# MX pointe vers CNAME dans la même vue = VIOLATION CRITIQUE
+# Résultat attendu : 1 violation CRITICAL MX_TO_CNAME
+
+view,rrName,rrType,rrTtl,rrValue
+ext,mail.company.com,MX,3600,10 mail-wrong.company.com
+ext,mail-wrong.company.com,CNAME,3600,mx-final.provider.net
+ext,mx-final.provider.net,A,3600,203.0.113.10
+ext,mx-final.provider.net,AAAA,3600,2001:db8::10

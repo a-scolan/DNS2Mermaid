@@ -1,0 +1,8 @@
+# Test 23 : NS_NO_GLUE violation - glue dans mauvaise vue
+# NS en ext mais glue seulement en int = VIOLATION CRITIQUE
+# Résultat attendu : 1 violation CRITICAL NS_NO_GLUE
+
+view,rrName,rrType,rrTtl,rrValue
+ext,company.com,NS,3600,ns-common.company.com
+int,ns-common.company.com,A,3600,10.0.1.1
+int,ns-common.company.com,AAAA,3600,fd00::1

@@ -1,0 +1,22 @@
+{
+	"name": "dns2mermaid",
+	"version": "1.1.0",
+	"description": "DNS to Mermaid Converter & Validator with SSL certificate checking",
+	"main": "dns2mermaid.js",
+	"type": "commonjs",
+	"keywords": ["dns", "mermaid", "visualization", "ssl", "validation"],
+	"license": "AGPL-3.0",
+	"scripts": {
+		"start": "node dns2mermaid.js",
+		"test": "node tests/run-all-tests.js",
+		"test:dns": "node tests/dns-validation/run-tests.js",
+		"test:email": "node tests/email-validation/run-tests.js",
+		"test:ignore": "node tests/ignore-rules/test-ignore-rules.js",
+		"test:columns": "node tests/test-column-detection.js",
+		"test:http": "node tests/http-validation/run-tests.js",
+		"test:all": "npm test",
+		"analyze": "node dns2mermaid.js --folder",
+		"validate": "node dns2mermaid.js --email-validation",
+		"demo": "node dns2mermaid.js -i demo/demo_complete.csv -o demo/demo.mmd --compact-layout --svg demo/demo.svg --background white && echo '\n✨ Demo generated in demo/ folder'"
+	}
+  }

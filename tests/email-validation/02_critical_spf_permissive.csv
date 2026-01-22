@@ -1,0 +1,5 @@
+TTL,Name,Type,Value,View
+3600,bad-spf.com,A,203.0.113.10,ext
+3600,bad-spf.com,MX,10 mail.bad-spf.com,ext
+3600,bad-spf.com,TXT,"v=spf1 +all",ext
+3600,mail.bad-spf.com,A,203.0.113.20,ext

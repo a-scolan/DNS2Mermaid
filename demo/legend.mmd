@@ -1,0 +1,59 @@
+flowchart LR
+    classDef internal fill:#b3d9ff,stroke:#0066cc,stroke-width:2px,color:black;
+    classDef external fill:#b3ffb3,stroke:#006600,stroke-width:1px,color:black;
+    classDef both fill:#d9b3ff,stroke:#8800cc,stroke-width:2px,color:black;
+    classDef target fill:#f9f9f9,stroke:#999,stroke-dasharray: 5 5;
+    classDef legendBox fill:#fafafa,stroke:#333,stroke-width:1px,color:black;
+    classDef critical fill:#ffe0e0,stroke:#ff0000,stroke-width:5px,color:black,stroke-dasharray: 10 5;
+    classDef internalWarning fill:#b3d9ff,stroke:#ff8800,stroke-width:4px,color:black;
+    classDef externalWarning fill:#b3ffb3,stroke:#ff8800,stroke-width:4px,color:black;
+    classDef bothWarning fill:#d9b3ff,stroke:#ff8800,stroke-width:4px,color:black;
+    classDef internalInfo fill:#b3d9ff,stroke:#ccaa00,stroke-width:3px,color:black,stroke-dasharray: 5 5;
+    classDef externalInfo fill:#b3ffb3,stroke:#ccaa00,stroke-width:3px,color:black,stroke-dasharray: 5 5;
+    classDef bothInfo fill:#d9b3ff,stroke:#ccaa00,stroke-width:3px,color:black,stroke-dasharray: 5 5;
+    classDef ipPrivate fill:#b3d9ff,stroke:#0066cc,stroke-width:2px,color:black;
+    classDef ipPublic fill:#b3ffb3,stroke:#006600,stroke-width:2px,color:black;
+    classDef leakedExternal fill:#ffebee,stroke:#e91e63,stroke-width:4px,color:black;
+    classDef sslValid fill:#d4edda,stroke:#28a745,stroke-width:2px,color:black;
+    classDef sslWarning fill:#fff3cd,stroke:#ffc107,stroke-width:3px,color:black;
+    classDef sslCritical fill:#f8d7da,stroke:#dc3545,stroke-width:4px,color:black;
+    classDef sslError fill:#e2e3e5,stroke:#6c757d,stroke-width:2px,color:black,stroke-dasharray: 5 5;
+
+    subgraph views ["🌐&nbsp;VUES&nbsp;DNS"]
+        direction TB
+        v1["🔵&nbsp;Interne"]:::internal
+        v2["🟢&nbsp;Externe"]:::external
+        v3["🟣&nbsp;Interne&nbsp;&&nbsp;Externe"]:::both
+        v1 ~~~ v2 ~~~ v3
+    end
+
+    subgraph violations ["⚠️&nbsp;VIOLATIONS&nbsp;RFC&nbsp;&&nbsp;BEST&nbsp;PRACTICES"]
+        direction TB
+        r1["🚨&nbsp;CRITICAL"]:::critical
+        r2["⚠️&nbsp;WARNING"]:::internalWarning
+        r3["ℹ️&nbsp;INFO"]:::externalInfo
+        r1 ~~~ r2 ~~~ r3
+    end
+
+    subgraph nodes ["🔷&nbsp;NŒUDS"]
+        direction TB
+        n1[["🔒&nbsp;IP&nbsp;Privée<br/>RFC&nbsp;1918"]]:::ipPrivate
+        n2[["🌐&nbsp;IP&nbsp;Publique<br/>Internet"]]:::ipPublic
+        n3["Cible&nbsp;externe"]:::target
+        n1 ~~~ n2 ~~~ n3
+    end
+
+    subgraph ssl ["🔐&nbsp;CERTIFICATS&nbsp;SSL"]
+        direction TB
+        c1{{"🔒&nbsp;OK&nbsp;>21j"}}:::sslValid
+        c2{{"⚠️&nbsp;7-21j"}}:::sslWarning
+        c3{{"🚨&nbsp;<7j"}}:::sslCritical
+        c4{{"❌&nbsp;Erreur"}}:::sslError
+        c1 ~~~ c2 ~~~ c3 ~~~ c4
+    end
+
+    views ~~~ violations ~~~ nodes ~~~ ssl
+    style views fill:#f8f9fa,stroke:#495057,stroke-width:2px
+    style violations fill:#fff3cd,stroke:#856404,stroke-width:2px
+    style nodes fill:#e7f5ff,stroke:#004085,stroke-width:2px
+    style ssl fill:#d4edda,stroke:#155724,stroke-width:2px

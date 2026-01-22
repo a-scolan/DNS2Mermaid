@@ -1,0 +1,10 @@
+# Test 29 : DMARC_MISSING_PUBLIC_MX violation
+# MX public mais DMARC seulement en vue interne = VIOLATION CRITIQUE
+# Résultat attendu : 1 violation CRITICAL DMARC_MISSING_PUBLIC_MX
+
+view,rrName,rrType,rrTtl,rrValue
+ext,company.com,MX,3600,10 mail.company.com
+ext,mail.company.com,A,3600,203.0.113.50
+ext,mail.company.com,AAAA,3600,2001:db8::50
+ext,company.com,TXT,3600,v=spf1 mx -all
+int,_dmarc.company.com,TXT,3600,v=DMARC1; p=reject

@@ -1,0 +1,6 @@
+TTL,Name,Type,Value,View
+3600,too-many-lookups.com,A,203.0.113.10,ext
+3600,too-many-lookups.com,MX,10 mail.too-many-lookups.com,ext
+3600,too-many-lookups.com,TXT,"v=spf1 include:_spf1.google.com include:_spf2.google.com include:_spf3.google.com include:_spf4.google.com include:_spf5.google.com include:_spf6.google.com include:_spf7.google.com include:_spf8.google.com include:_spf9.google.com include:_spf10.google.com include:_spf11.google.com -all",ext
+3600,mail.too-many-lookups.com,A,203.0.113.20,ext
+3600,_dmarc.too-many-lookups.com,TXT,"v=DMARC1; p=quarantine; rua=mailto:dmarc@too-many-lookups.com",ext

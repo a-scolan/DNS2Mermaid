@@ -1,0 +1,7 @@
+TTL,Name,Type,Value,View
+3600,dmarc-none.com,A,203.0.113.10,ext
+3600,dmarc-none.com,MX,10 mail.dmarc-none.com,ext
+3600,dmarc-none.com,TXT,"v=spf1 mx -all",ext
+3600,mail.dmarc-none.com,A,203.0.113.20,ext
+3600,selector1._domainkey.dmarc-none.com,TXT,"v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC3QEKyU1fSma0axspqYK5iAj+54lsAg4qRRCnpKK68hawSd8zpsDz77ntGCPaQ+u0LCjkSZ5WE6cMKgGLDzpvPe97JiYVN0dS1i6T2DmJvVUNCJvs5L/cXQmXABF2qKHsFrZkpzqLLnqqcOjA32PkWxLV7p71lHOBqBH0f5l2LwwIDAQAB",ext
+3600,_dmarc.dmarc-none.com,TXT,"v=DMARC1; p=none; rua=mailto:dmarc@dmarc-none.com",ext

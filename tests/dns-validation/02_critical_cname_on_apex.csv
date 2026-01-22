@@ -1,0 +1,3 @@
+TTL,Name,Type,Value,View
+3600,example.com,CNAME,target.example.com,ext
+3600,target.example.com,A,203.0.113.10,ext

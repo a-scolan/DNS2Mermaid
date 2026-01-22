@@ -1,0 +1,457 @@
+═══════════════════════════════════════════════════════════
+           RAPPORT DE TESTS CONSOLIDÉ - DNS2MERMAID
+═══════════════════════════════════════════════════════════
+
+Date de génération : 2025-12-11T15:18:23.497Z
+Fichier : tests/test-report-latest.txt
+
+
+> dns2mermaid@1.1.0 test:columns
+> node tests/test-column-detection.js
+
+Test de parsing CSV avec différents ordres de colonnes
+
+Test 1 - Ordre classique (TTL,Name,Type,Value,View)
+✅ PASS
+
+Test 2 - Ordre inversé (Type,Value,Name,View,TTL)
+✅ PASS
+
+Test 3 - Noms alternatifs (hostname,record_type,data) sans View ni TTL
+✅ PASS
+
+Test 4 - Colonnes manquantes (doit échouer proprement)
+✅ PASS - Erreur détectée correctement
+
+Tests terminés!
+
+> dns2mermaid@1.1.0 test:dns
+> node tests/dns-validation/run-tests.js
+
+[34m============================================================================[0m
+[34mTests de Validation DNS RFC - dns2mermaid.js[0m
+[34m============================================================================[0m
+
+[34mℹ️  Répertoire de test : C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\tests\dns-validation[0m
+[34mℹ️  Validation RFC activée par défaut[0m
+
+
+[33m📋 Test #01: CNAME coexistant avec d'autres types (RFC 1034)[0m
+Exécution : node dns2mermaid.js -i "01_critical_cname_coexistence.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : CNAME_COEXISTENCE (🚨 CRITICAL)[0m
+   Extrait du rapport :
+   │ 1. [CNAME_COEXISTENCE] bad-cname.com
+   │    CNAME ne peut pas coexister avec d'autres types dans la même vue (A)
+   │    Référence: RFC 1034 Section 3.6.2
+
+[33m📋 Test #02: CNAME sur zone apex/domaine racine (RFC 1912)[0m
+Exécution : node dns2mermaid.js -i "02_critical_cname_on_apex.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : CNAME_ON_APEX (🚨 CRITICAL)[0m
+   Extrait du rapport :
+   │ 1. [CNAME_ON_APEX] example.com
+   │    CNAME interdit sur zone apex (domaine racine)
+   │    Référence: RFC 1912 Section 2.4
+
+[33m📋 Test #03: Boucle de CNAMEs (détection de cycles)[0m
+Exécution : node dns2mermaid.js -i "03_critical_cname_loop.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : CNAME_LOOP (🚨 CRITICAL)[0m
+   Extrait du rapport :
+   │ 1. [CNAME_LOOP] loop.example.com
+   │    CNAME crée une boucle DNS : loop.example.com → loop.example.com
+   │    Référence: RFC 1034 Section 3.6.2
+
+[33m📋 Test #04: SPF avec +all (RFC 7208)[0m
+Exécution : node dns2mermaid.js -i "04_critical_spf_too_permissive.csv" --no-ssl-check --no-export --quiet --email-validation
+[32m✅ Violation détectée : SPF_TOO_PERMISSIVE (🚨 CRITICAL)[0m
+   Extrait du rapport :
+   │ 1. [SPF_TOO_PERMISSIVE] permissive.com
+   │    SPF trop permissif (+all) dans vue publique - Permet à n'importe qui d'envoyer des emails
+   │    Référence: RFC 7208 Section 5.1 (Mécanisme all)
+
+[33m📋 Test #05: Chaîne de CNAMEs (dégradation performances)[0m
+Exécution : node dns2mermaid.js -i "05_warning_cname_chain.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : CNAME_CHAIN (⚠️  WARNING)[0m
+   Extrait du rapport :
+   │ 1. [CNAME_CHAIN] www.example.com
+   │    CNAME pointe vers un autre CNAME (cdn1.example.com -> cdn2.example.com)
+   │    Référence: RFC 2181 Section 10.1 (Performance)
+
+[33m📋 Test #06: TTL incohérents pour un même FQDN[0m
+Exécution : node dns2mermaid.js -i "06_warning_inconsistent_ttl.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : INCONSISTENT_TTL (⚠️  WARNING)[0m
+   Extrait du rapport :
+   │ 1. [INCONSISTENT_TTL] inconsistent.com
+   │    TTL incohérents pour les enregistrements A/AAAA (300, 3600, 7200)
+   │    Référence: RFC 1035 Section 3.2.1 (Cache DNS)
+
+[33m📋 Test #07: TTL < 60s (charge DNS excessive)[0m
+Exécution : node dns2mermaid.js -i "07_warning_ttl_too_short.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : TTL_TOO_SHORT (⚠️  WARNING)[0m
+   Extrait du rapport :
+   │ 1. [TTL_TOO_SHORT] short-ttl.com
+   │    TTL très court (30s) pour A - Risque de charge DNS élevée
+   │    Référence: Bonne pratique : Minimum 300s (5min) recommandé
+
+[33m📋 Test #08: SPF avec ?all (protection faible)[0m
+Exécution : node dns2mermaid.js -i "08_warning_spf_neutral.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : SPF_NEUTRAL (⚠️  WARNING)[0m
+   Extrait du rapport :
+   │ 1. [SPF_NEUTRAL] neutral-spf.com
+   │    SPF neutre (?all) - Peu de protection contre le spoofing
+   │    Référence: RFC 7208 Section 2.6.1 (Qualificateur neutral)
+
+[33m📋 Test #09: IP privée RFC 1918 en vue externe[0m
+Exécution : node dns2mermaid.js -i "09_warning_view_segregation.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : VIEW_SEGREGATION_PRIVATE_EXTERNAL (⚠️  WARNING)[0m
+   Extrait du rapport :
+   │ 1. [VIEW_SEGREGATION_PRIVATE_EXTERNAL] private-exposed.com
+   │    IP privée RFC 1918 (192.168.1.10) exposée en vue externe - Fuite d'information réseau
+   │    Référence: RFC 1918 Section 3 + Bonne pratique sécurité
+
+[33m📋 Test #10: CNAME pointant vers cible externe non résolue[0m
+   Exécution : node dns2mermaid.js -i "10_info_cname_orphan.csv" --show-orphans --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : CNAME_ORPHAN (ℹ️  INFO)[0m
+   Extrait du rapport :
+   │ 1. [CNAME_ORPHAN] orphan.example.com
+   │    CNAME pointe vers un nom non résolu dans ce dataset (nonexistent.external.com) - Peut être externe
+   │    Référence: Bonne pratique : Vérifier résolution externe
+
+[33m📋 Test #11: TTL différents entre vues int/ext (détecté comme INCONSISTENT_TTL)[0m
+Exécution : node dns2mermaid.js -i "11_info_inconsistent_ttl_multiview.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : INCONSISTENT_TTL (⚠️  WARNING)[0m
+   Extrait du rapport :
+   │ 1. [INCONSISTENT_TTL] multiview.com
+   │    TTL incohérents pour les enregistrements A/AAAA (3600, 7200)
+   │    Référence: RFC 1035 Section 3.2.1 (Cache DNS)
+
+[33m📋 Test #12: TTL > 86400s (24h) - Flexibilité réduite[0m
+Exécution : node dns2mermaid.js -i "12_info_ttl_too_long.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : TTL_TOO_LONG (ℹ️  INFO)[0m
+   Extrait du rapport :
+   │ 1. [TTL_TOO_LONG] long-ttl.com
+   │    TTL très long (172800s) pour A
+   │    Référence: Bonne pratique : Maximum 24h pour flexibilité
+
+[33m📋 Test #13: A sans AAAA (modernisation IPv6)[0m
+Exécution : node dns2mermaid.js -i "13_info_missing_ipv6.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : MISSING_IPV6 (ℹ️  INFO)[0m
+   Extrait du rapport :
+   │ 1. [MISSING_IPV6] no-ipv6.com
+   │    Enregistrement A sans AAAA correspondant (bonne pratique: supporter IPv6)
+   │    Référence: Bonne pratique : RFC 8200 (IPv6 Specification)
+
+[33m📋 Test #14: Vérification absence de faux positifs DUPLICATE_RECORD[0m
+[32m✅ Pas de faux positifs DUPLICATE_RECORD détectés[0m
+
+[33m📋 Test #15: Utilisation de wildcard (*)[0m
+Exécution : node dns2mermaid.js -i "15_info_wildcard_restriction.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : WILDCARD_RESTRICTION (ℹ️  INFO)[0m
+   Extrait du rapport :
+   │ 2. [WILDCARD_RESTRICTION] *.wildcard.com
+   │    Wildcard avec types restreints (MX)
+   │    Référence: RFC 4592 Section 2.1.1 (Wildcard Synthesis)
+
+[33m📋 Test #16: Configuration DNS complète et valide[0m
+[32m✅ Aucune violation détectée (configuration valide)[0m
+
+[33m📋 Test #17: CNAME en vue externe + A en vue interne (multi-view DNS valide)[0m
+[32m✅ Aucune violation détectée (configuration valide)[0m
+
+[33m📋 Test #18: CNAME et A dans la MÊME vue (violation réelle)[0m
+Exécution : node dns2mermaid.js -i "18_critical_cname_same_view.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : CNAME_COEXISTENCE (🚨 CRITICAL)[0m
+   Extrait du rapport :
+   │ 1. [CNAME_COEXISTENCE] invalid-multiview.com
+   │    CNAME ne peut pas coexister avec d'autres types dans la même vue (A, AAAA)
+   │    Référence: RFC 1034 Section 3.6.2
+
+[33m📋 Test #19: Architecture DNS multi-view enterprise (CDN externe + réseau interne)[0m
+[32m✅ Aucune violation détectée (configuration valide)[0m
+
+[33m📋 Test #20: MX→CNAME en vues différentes (multi-view valide)[0m
+[32m✅ Aucune violation détectée (configuration valide)[0m
+
+[33m📋 Test #21: MX→CNAME dans la MÊME vue (violation réelle)[0m
+Exécution : node dns2mermaid.js -i "21_critical_mx_to_cname_same_view.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : MX_TO_CNAME (🚨 CRITICAL)[0m
+   Extrait du rapport :
+   │ 1. [MX_TO_CNAME] mail.company.com
+   │    MX pointe vers un CNAME (mail-wrong.company.com) dans une vue commune
+   │    Référence: RFC 2181 Section 10.3
+
+[33m📋 Test #22: NS avec glue records dans chaque vue (multi-view valide)[0m
+[32m✅ Aucune violation détectée (configuration valide)[0m
+
+[33m📋 Test #23: NS sans glue dans la bonne vue (violation)[0m
+Exécution : node dns2mermaid.js -i "23_critical_ns_no_glue_wrong_view.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : NS_NO_GLUE (🚨 CRITICAL)[0m
+   Extrait du rapport :
+   │ 1. [NS_NO_GLUE] company.com
+   │    NS pointe vers ns-common.company.com qui n'a pas d'enregistrement A/AAAA dans les mêmes vues
+   │    Référence: RFC 1035 Section 3.3.9 (Glue Records)
+
+[33m📋 Test #24: SPF +all en vue interne seulement (confiance interne valide)[0m
+[32m✅ Aucune violation détectée (configuration valide)[0m
+
+[33m📋 Test #25: SPF +all en vue publique (violation)[0m
+Exécution : node dns2mermaid.js -i "25_critical_spf_permissive_public.csv" --no-ssl-check --no-export --quiet --email-validation
+[32m✅ Violation détectée : SPF_TOO_PERMISSIVE (🚨 CRITICAL)[0m
+   Extrait du rapport :
+   │ 1. [SPF_TOO_PERMISSIVE] mail.company.com
+   │    SPF trop permissif (+all) dans vue publique - Permet à n'importe qui d'envoyer des emails
+   │    Référence: RFC 7208 Section 5.1 (Mécanisme all)
+
+[33m📋 Test #26: Même enregistrement en vues différentes (pas de duplication)[0m
+[32m✅ Aucune violation détectée (configuration valide)[0m
+
+[33m📋 Test #27: Duplicatas fusionnés au parsing (pas de faux positifs)[0m
+[32m✅ Aucune violation détectée (configuration valide)[0m
+
+[33m📋 Test #28: DMARC dans vue publique avec MX public (valide)[0m
+[32m✅ Aucune violation détectée (configuration valide)[0m
+
+[33m📋 Test #29: DMARC manquant en vue publique (violation)[0m
+Exécution : node dns2mermaid.js -i "29_critical_dmarc_missing_public_view.csv" --no-ssl-check --no-export --quiet --email-validation
+[32m✅ Violation détectée : DMARC_MISSING_WITH_PUBLIC_MX (🚨 CRITICAL)[0m
+   Extrait du rapport :
+   │ 1. [DMARC_MISSING_WITH_PUBLIC_MX] company.com
+   │    Domaine avec MX publics mais sans DMARC dans les vues publiques - Risque de phishing/spoofing
+   │    Référence: RFC 7489 Section 6.3
+
+[33m📋 Test #30: MX et SPF correspondent par vue (multi-view valide)[0m
+[32m✅ Aucune violation détectée (configuration valide)[0m
+
+[33m📋 Test #31: MX manquant dans SPF de la vue ext[0m
+Exécution : node dns2mermaid.js -i "31_warning_mx_not_in_spf_view.csv" --no-ssl-check --no-export --quiet --email-validation
+[32m✅ Violation détectée : MX_NOT_IN_SPF (⚠️  WARNING)[0m
+   Extrait du rapport :
+   │ 1. [MX_NOT_IN_SPF] company.com
+   │    Serveurs MX (mail-ext.company.com) absents du SPF dans la vue 'ext' - Risque de rejet email
+   │    Référence: RFC 7208 Section 5.4 (mx mechanism)
+
+[33m📋 Test #32: Boucle CNAME à 2 niveaux (A→B→A)[0m
+Exécution : node dns2mermaid.js -i "32_critical_cname_loop_2levels.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : CNAME_LOOP (🚨 CRITICAL)[0m
+   Extrait du rapport :
+   │ 1. [CNAME_LOOP] loop-a.example.com
+   │    CNAME crée une boucle DNS : loop-a.example.com → loop-b.example.com → loop-a.example.com
+   │    Référence: RFC 1034 Section 3.6.2
+
+[33m📋 Test #33: Boucle CNAME à 4 niveaux (A→B→C→D→A)[0m
+Exécution : node dns2mermaid.js -i "33_critical_cname_loop_4levels.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : CNAME_LOOP (🚨 CRITICAL)[0m
+   Extrait du rapport :
+   │ 1. [CNAME_LOOP] loop1.example.com
+   │    CNAME crée une boucle DNS : loop1.example.com → loop2.example.com → loop3.example.com → loop4.example.com → loop1.example.com
+   │    Référence: RFC 1034 Section 3.6.2
+
+[33m📋 Test #34: Chaîne CNAME valide sans boucle (peut déclencher CNAME_CHAIN)[0m
+Exécution : node dns2mermaid.js -i "34_valid_cname_chain_no_loop.csv" --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : CNAME_CHAIN (⚠️  WARNING)[0m
+   Extrait du rapport :
+   │ 1. [CNAME_CHAIN] start.example.com
+   │    CNAME pointe vers un autre CNAME (middle.example.com -> end.example.com)
+   │    Référence: RFC 2181 Section 10.1 (Performance)
+
+[34m============================================================================[0m
+[34mRÉSUMÉ DES TESTS[0m
+[34m============================================================================[0m
+
+Total de tests   : 34
+[32mTests réussis    : 34[0m
+[31mTests échoués    : 0[0m
+
+[32m✅ Tous les tests sont passés ![0m
+
+🎉 La validation DNS RFC fonctionne correctement.
+   Toutes les règles sont testées et validées.
+
+> dns2mermaid@1.1.0 test:email
+> node tests/email-validation/run-tests.js
+
+[34m============================================================================[0m
+[34mTests de Validation Email - dns2mermaid.js[0m
+[34m============================================================================[0m
+
+[34mℹ️  Répertoire de test : C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\tests\email-validation[0m
+[34mℹ️  Flag testé : --email-validation[0m
+
+
+[33m📋 Test #01: Configuration email complète valide (SPF + DKIM + DMARC + Autodiscover)[0m
+[32m✅ Aucune violation email détectée (configuration valide)[0m
+
+[33m📋 Test #02: SPF avec +all (permet à tout le monde d'envoyer)[0m
+   Exécution : node dns2mermaid.js -i "02_critical_spf_permissive.csv" --email-validation --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : SPF_ALL_PERMISSIVE (🚨 CRITICAL)[0m
+   Extrait du rapport :
+   │ 2. [SPF_ALL_PERMISSIVE] bad-spf.com
+   │    SPF avec +all en vue publique permet à n'importe qui d'envoyer des emails
+   │    Référence: RFC 7208 Section 5.1
+
+[33m📋 Test #03: DMARC manquant alors que MX publics existent[0m
+   Exécution : node dns2mermaid.js -i "03_critical_dmarc_missing.csv" --email-validation --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : DMARC_MISSING_WITH_PUBLIC_MX (🚨 CRITICAL)[0m
+   Extrait du rapport :
+   │ 1. [DMARC_MISSING_WITH_PUBLIC_MX] no-dmarc.com
+   │    Domaine avec MX publics mais sans DMARC dans les vues publiques - Risque de phishing/spoofing
+   │    Référence: RFC 7489 Section 6.3
+
+[33m📋 Test #04: SPF avec plus de 10 lookups DNS (limite RFC 7208)[0m
+   Exécution : node dns2mermaid.js -i "04_warning_spf_too_many_lookups.csv" --email-validation --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : SPF_TOO_MANY_LOOKUPS (⚠️  WARNING)[0m
+   Extrait du rapport :
+   │ 1. [SPF_TOO_MANY_LOOKUPS] too-many-lookups.com
+   │    SPF avec 11 lookups DNS (limite RFC 7208: 10) - Risque PermError
+   │    Référence: RFC 7208 Section 4.6.4
+
+[33m📋 Test #05: Serveurs MX absents du SPF[0m
+   Exécution : node dns2mermaid.js -i "05_warning_mx_not_in_spf.csv" --email-validation --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : MX_NOT_IN_SPF (⚠️  WARNING)[0m
+   Extrait du rapport :
+   │ 1. [MX_NOT_IN_SPF] mx-not-in-spf.com
+   │    Serveurs MX (mail1.mx-not-in-spf.com, mail2.mx-not-in-spf.com) absents du SPF dans la vue 'ext' - Risque de rejet email
+   │    Référence: RFC 7208 Section 5.4 (mx mechanism)
+
+[33m📋 Test #06: DKIM sans clé publique ou format invalide[0m
+   Exécution : node dns2mermaid.js -i "06_warning_dkim_invalid.csv" --email-validation --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : DKIM_INVALID_FORMAT (⚠️  WARNING)[0m
+   Extrait du rapport :
+   │ 1. [DKIM_INVALID_FORMAT] invalid-dkim.com
+   │    DKIM sans version (v=DKIM1) pour selector1._domainkey.invalid-dkim.com
+   │    Référence: RFC 6376 Section 3.6.1
+
+[33m📋 Test #07: DMARC en mode monitoring (p=none)[0m
+   Exécution : node dns2mermaid.js -i "07_info_dmarc_policy_none.csv" --email-validation --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : DMARC_POLICY_NONE (ℹ️  INFO)[0m
+   Extrait du rapport :
+   │ 3. [DMARC_POLICY_NONE] dmarc-none.com
+   │    DMARC en mode monitoring uniquement (p=none) - Considérer p=quarantine ou p=reject
+   │    Référence: RFC 7489 Section 6.3 (Policy)
+
+[33m📋 Test #08: Pas de DKIM détecté[0m
+   Exécution : node dns2mermaid.js -i "08_info_dkim_missing.csv" --email-validation --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : DKIM_MISSING (ℹ️  INFO)[0m
+   Extrait du rapport :
+   │ 3. [DKIM_MISSING] no-dkim.com
+   │    Pas de DKIM détecté - Recommandé pour l'authentification email
+   │    Référence: RFC 6376 (Bonne pratique)
+
+[33m📋 Test #09: Pas d'autodiscover/autoconfig[0m
+   Exécution : node dns2mermaid.js -i "09_info_autodiscover_missing.csv" --email-validation --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : AUTODISCOVER_MISSING (ℹ️  INFO)[0m
+   Extrait du rapport :
+   │ 3. [AUTODISCOVER_MISSING] no-autodiscover.com
+   │    Pas d'autodiscover/autoconfig - Configuration manuelle requise pour clients email
+   │    Référence: Bonne pratique (Exchange/Office365/Thunderbird)
+
+[33m📋 Test #11: DKIM avec clé RSA faible (< 1024 bits)[0m
+   Exécution : node dns2mermaid.js -i "11_warning_dkim_weak_key.csv" --email-validation --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : DKIM_WEAK_KEY (⚠️  WARNING)[0m
+   Extrait du rapport :
+   │ 1. [DKIM_WEAK_KEY] weak-dkim.com
+   │    Clé DKIM potentiellement faible (<1024 bits estimés) pour selector1._domainkey.weak-dkim.com
+   │    Référence: RFC 6376 Section 3.3.3 (Recommandation 1024-2048 bits)
+
+[33m📋 Test #12: DMARC sans adresses de reporting (rua/ruf)[0m
+   Exécution : node dns2mermaid.js -i "12_warning_dmarc_no_reporting.csv" --email-validation --no-ssl-check --no-export --quiet
+[32m✅ Violation détectée : DMARC_NO_REPORTING (⚠️  WARNING)[0m
+   Extrait du rapport :
+   │ 1. [DMARC_NO_REPORTING] no-reporting.com
+   │    DMARC sans adresses de reporting (rua/ruf) - Pas de visibilité sur les échecs
+   │    Référence: RFC 7489 Section 6.2 (Reporting)
+
+[33m📋 Test #13: Configuration avec multiples violations[0m
+[32m✅ Multiples violations détectées (2 CRITICAL, 3 WARNING)[0m
+   Violations détectées :
+   │ 1. [SPF_TOO_PERMISSIVE] multi-issues.com
+   │ 2. [SPF_ALL_PERMISSIVE] multi-issues.com
+   │ 3. [DMARC_MISSING_WITH_PUBLIC_MX] multi-issues.com
+   │ 1. [SPF_TOO_MANY_LOOKUPS] multi-issues.com
+   │ 3. [DKIM_INVALID_FORMAT] multi-issues.com
+
+[34m============================================================================[0m
+[34mRÉSUMÉ DES TESTS[0m
+[34m============================================================================[0m
+
+Total de tests   : 12
+[32mTests réussis    : 12[0m
+[31mTests échoués    : 0[0m
+
+[32m✅ Tous les tests sont passés ![0m
+
+🎉 La validation email fonctionne correctement.
+
+> dns2mermaid@1.1.0 test:http
+> node tests/http-validation/run-tests.js
+
+
+╔════════════════════════════════════════════════════════════╗
+║     TESTS DE VALIDATION HTTP/HTTPS - DNS2MERMAID         ║
+╚════════════════════════════════════════════════════════════╝
+
+============================================================
+Test: Test 1: Résolution HTTP/HTTPS basique (200 OK)
+============================================================
+Commande: node "C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\dns2mermaid.js" --input "C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\tests\http-validation\01_valid_http_https.csv" --http-check --no-ssl-check --no-diagram --no-export --quiet
+✅ Section HTTP présente
+✅ Domaine testé
+✅ IP testée
+
+✅ Test 1: Résolution HTTP/HTTPS basique (200 OK) - SUCCÈS
+
+============================================================
+Test: Test 2: Résolution CNAME vers IP finale
+============================================================
+Commande: node "C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\dns2mermaid.js" --input "C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\tests\http-validation\02_cname_resolution.csv" --http-check --no-ssl-check --no-diagram --no-export --quiet
+✅ CNAME testé
+✅ Résolution CNAME affichée
+✅ IP finale affichée
+
+✅ Test 2: Résolution CNAME vers IP finale - SUCCÈS
+
+============================================================
+Test: Test 3: Erreur de connexion (IP privée)
+============================================================
+Commande: node "C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\dns2mermaid.js" --input "C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\tests\http-validation\03_connection_error.csv" --http-check --no-ssl-check --no-diagram --no-export --quiet
+✅ Domaine testé
+✅ IP privée affichée
+✅ Section erreurs présente
+
+✅ Test 3: Erreur de connexion (IP privée) - SUCCÈS
+
+============================================================
+Test: Test 4: Redirections HTTP (301/302)
+============================================================
+Commande: node "C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\dns2mermaid.js" --input "C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\tests\http-validation\04_http_redirect.csv" --http-check --no-ssl-check --no-diagram --no-export --quiet
+✅ Domaine testé
+✅ Cible CNAME affichée
+
+✅ Test 4: Redirections HTTP (301/302) - SUCCÈS
+
+============================================================
+Test: Test 5: Multi-view (2 IPs différentes)
+============================================================
+Commande: node "C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\dns2mermaid.js" --input "C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\tests\http-validation\05_multiview_test.csv" --http-check --no-ssl-check --no-diagram --no-export --quiet
+✅ Domaine testé
+✅ IP interne testée
+✅ IP externe testée
+✅ Vue interne mentionnée
+✅ Vue externe mentionnée
+
+✅ Test 5: Multi-view (2 IPs différentes) - SUCCÈS
+
+============================================================
+RÉSUMÉ DES TESTS HTTP/HTTPS
+============================================================
+Total: 5 tests
+✅ Réussis: 5
+❌ Échoués: 0
+============================================================
+
+🎉 TOUS LES TESTS HTTP/HTTPS SONT PASSÉS ! 🎉
+
+
+
+═══════════════════════════════════════════════════════════
+Fin du rapport - Tous les tests terminés ✅
+═══════════════════════════════════════════════════════════

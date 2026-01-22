@@ -1,0 +1,4 @@
+TTL,Name,Type,Value,View
+3600,timeout1.invalid-domain-xyz123.com,A,203.0.113.10,ext
+3600,timeout2.invalid-domain-xyz123.com,A,203.0.113.11,ext
+3600,timeout3.invalid-domain-xyz123.com,A,203.0.113.12,ext

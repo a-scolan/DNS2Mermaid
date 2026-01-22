@@ -1,0 +1,11 @@
+# Test 22 : NS_NO_GLUE valide en multi-view
+# NS a des glue records dans les mêmes vues = VALIDE
+# Résultat attendu : AUCUNE violation NS_NO_GLUE
+
+view,rrName,rrType,rrTtl,rrValue
+ext,company.com,NS,3600,ns-ext.company.com
+ext,ns-ext.company.com,A,3600,203.0.113.1
+ext,ns-ext.company.com,AAAA,3600,2001:db8::1
+int,company.com,NS,3600,ns-int.company.com
+int,ns-int.company.com,A,3600,10.0.1.1
+int,ns-int.company.com,AAAA,3600,fd00::1

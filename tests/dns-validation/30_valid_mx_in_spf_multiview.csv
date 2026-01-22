@@ -1,0 +1,13 @@
+# Test 30 : MX_NOT_IN_SPF valide en multi-view
+# MX et SPF correspondent par vue = VALIDE
+# Résultat attendu : AUCUNE violation MX_NOT_IN_SPF
+
+view,rrName,rrType,rrTtl,rrValue
+ext,company.com,MX,3600,10 mail-ext.company.com
+ext,mail-ext.company.com,A,3600,203.0.113.50
+ext,mail-ext.company.com,AAAA,3600,2001:db8::50
+ext,company.com,TXT,3600,v=spf1 mx -all
+int,company.com,MX,3600,10 mail-int.company.com
+int,mail-int.company.com,A,3600,10.0.1.50
+int,mail-int.company.com,AAAA,3600,fd00::50
+int,company.com,TXT,3600,v=spf1 mx -all

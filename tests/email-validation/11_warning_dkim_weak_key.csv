@@ -1,0 +1,9 @@
+TTL,Name,Type,Value,View
+3600,weak-dkim.com,A,203.0.113.10,ext
+3600,weak-dkim.com,AAAA,2001:db8::10,ext
+3600,weak-dkim.com,MX,10 mail.weak-dkim.com,ext
+3600,weak-dkim.com,TXT,"v=spf1 mx -all",ext
+3600,mail.weak-dkim.com,A,203.0.113.20,ext
+3600,mail.weak-dkim.com,AAAA,2001:db8::20,ext
+3600,selector1._domainkey.weak-dkim.com,TXT,"v=DKIM1; k=rsa; p=MFwwDQYJKo",ext
+3600,_dmarc.weak-dkim.com,TXT,"v=DMARC1; p=quarantine; rua=mailto:dmarc@weak-dkim.com",ext

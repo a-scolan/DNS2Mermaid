@@ -1,0 +1,8 @@
+TTL,Name,Type,Value,View
+3600,multi-issues.com,A,203.0.113.10,ext
+3600,multi-issues.com,MX,10 mail1.multi-issues.com,ext
+3600,multi-issues.com,MX,20 mail2.multi-issues.com,ext
+3600,multi-issues.com,TXT,"v=spf1 include:_spf1.google.com include:_spf2.google.com include:_spf3.google.com include:_spf4.google.com include:_spf5.google.com include:_spf6.google.com include:_spf7.google.com include:_spf8.google.com include:_spf9.google.com include:_spf10.google.com include:_spf11.google.com +all",ext
+3600,mail1.multi-issues.com,A,203.0.113.20,ext
+3600,mail2.multi-issues.com,A,203.0.113.21,ext
+3600,selector1._domainkey.multi-issues.com,TXT,"p=",ext

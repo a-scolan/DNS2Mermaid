@@ -1,0 +1,5 @@
+# Test : CNAME avec résolution vers IP
+# Le CNAME doit être résolu vers l'IP finale pour tester HTTP
+View,Name,Type,TTL,Value
+ext,alias-test.com,CNAME,3600,google.com
+ext,google.com,A,3600,142.250.74.206

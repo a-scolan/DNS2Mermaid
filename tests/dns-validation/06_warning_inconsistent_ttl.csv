@@ -1,0 +1,4 @@
+TTL,Name,Type,Value,View
+300,inconsistent.com,A,203.0.113.10,ext
+3600,inconsistent.com,A,203.0.113.11,ext
+7200,inconsistent.com,AAAA,2001:db8::1,ext

@@ -1,0 +1,60 @@
+═══════════════════════════════════════════════════════════
+           RAPPORT DE VALIDATION DNS RFC
+═══════════════════════════════════════════════════════════
+
+Date: 2025-12-11T15:17:52.025Z
+Fichier source: C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\tests\dns-validation\12_info_ttl_too_long.csv
+Domaines analysés: 1
+Violations détectées: 2
+
+🚨 Violations BLOQUANTES (CRITICAL): 0
+⚠️  Problèmes à corriger (WARNING): 0
+ℹ️  Bonnes pratiques (INFO): 2
+
+📊 BILAN PAR RÈGLE:
+
+   ℹ️ TTL_TOO_LONG: 2 violation(s)
+
+───────────────────────────────────────────────────────────
+
+
+ℹ️  RECOMMANDATIONS (BONNES PRATIQUES):
+
+1. [TTL_TOO_LONG] long-ttl.com
+   TTL très long (172800s) pour A
+   Référence: Bonne pratique : Maximum 24h pour flexibilité
+   Enregistrements affectés: A 203.0.113.10
+
+2. [TTL_TOO_LONG] long-ttl.com
+   TTL très long (172800s) pour AAAA
+   Référence: Bonne pratique : Maximum 24h pour flexibilité
+   Enregistrements affectés: AAAA 2001:db8::1
+
+
+───────────────────────────────────────────────────────────
+RÈGLES VALIDÉES (19 règles, 3 niveaux):
+
+🚨 BLOQUANTES (CRITICAL) - Violations RFC:
+1. CNAME_COEXISTENCE: Un CNAME ne peut coexister avec d'autres types (RFC 1034)
+2. CNAME_ON_APEX: CNAME interdit sur zone apex/domaine racine (RFC 1912)
+3. CNAME_LOOP: Un CNAME ne peut pointer vers lui-même
+4. MX_TO_CNAME: Les MX ne peuvent pointer vers des CNAMEs (RFC 2181)
+5. NS_TO_CNAME: Les NS ne peuvent pointer vers des CNAMEs (RFC 2181)
+6. MX_NO_GLUE / NS_NO_GLUE: MX/NS doivent pointer vers noms avec A/AAAA
+7. SPF_TOO_PERMISSIVE: SPF avec +all autorise tout le monde
+
+⚠️  IMPORTANTES (WARNING) - À corriger rapidement:
+8. CNAME_CHAIN: Les CNAMEs chaînés dégradent les performances (RFC 2181)
+9. INCONSISTENT_TTL: TTL incohérents causent comportement imprévisible
+10. TTL_TOO_SHORT: TTL < 60s génère une charge DNS excessive
+11. SPF_NEUTRAL: SPF avec ?all offre peu de protection
+12. MX_ORPHAN / NS_ORPHAN: Pointe vers un nom non résolu
+13. VIEW_SEGREGATION_PRIVATE_EXTERNAL: IP privée RFC 1918 exposée en vue externe
+
+ℹ️  RECOMMANDATIONS (INFO) - Bonnes pratiques:
+14. MISSING_IPV6: Enregistrement A sans AAAA (moderniser)
+15. TTL_TOO_LONG: TTL > 86400s rend les changements lents
+16. WILDCARD_RESTRICTION: Attention wildcards avec certains types
+17. DUPLICATE_RECORD: Enregistrements identiques redondants
+18. CNAME_ORPHAN: CNAME pointe vers un nom absent du dataset (vérifier si externe)
+19. INCONSISTENT_TTL_MULTIVIEW: Même enregistrement avec TTL différents selon les vues

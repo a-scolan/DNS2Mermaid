@@ -1,0 +1,8 @@
+TTL,Name,Type,Value,View
+3600,mx-not-in-spf.com,A,203.0.113.10,ext
+3600,mx-not-in-spf.com,MX,10 mail1.mx-not-in-spf.com,ext
+3600,mx-not-in-spf.com,MX,20 mail2.mx-not-in-spf.com,ext
+3600,mx-not-in-spf.com,TXT,"v=spf1 ip4:203.0.113.50 -all",ext
+3600,mail1.mx-not-in-spf.com,A,203.0.113.20,ext
+3600,mail2.mx-not-in-spf.com,A,203.0.113.21,ext
+3600,_dmarc.mx-not-in-spf.com,TXT,"v=DMARC1; p=quarantine; rua=mailto:dmarc@mx-not-in-spf.com",ext

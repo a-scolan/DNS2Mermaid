@@ -1,0 +1,10 @@
+═══════════════════════════════════════════════════════════
+           RAPPORT DE VALIDATION DNS RFC
+═══════════════════════════════════════════════════════════
+
+Date: 2025-12-11T15:17:54.222Z
+Fichier source: C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\tests\dns-validation\30_valid_mx_in_spf_multiview.csv
+Domaines analysés: 3
+Violations détectées: 0
+
+✅ Aucune violation DNS détectée. Configuration conforme aux RFC.

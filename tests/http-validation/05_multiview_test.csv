@@ -1,0 +1,5 @@
+# Test : Multi-view (interne et externe)
+# Doit tester les deux IPs
+View,Name,Type,TTL,Value
+int,multiview.test,A,3600,10.0.0.50
+ext,multiview.test,A,3600,142.250.74.206

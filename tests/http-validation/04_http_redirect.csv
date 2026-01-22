@@ -1,0 +1,5 @@
+# Test : Domaine avec redirect (301/302)
+# GitHub redirige HTTP vers HTTPS
+View,Name,Type,TTL,Value
+ext,redirect-test.com,CNAME,3600,github.com
+ext,github.com,A,3600,140.82.121.3

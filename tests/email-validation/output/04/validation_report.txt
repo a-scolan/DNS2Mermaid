@@ -1,0 +1,97 @@
+═══════════════════════════════════════════════════════════
+           RAPPORT DE VALIDATION DNS RFC
+═══════════════════════════════════════════════════════════
+
+Date: 2025-12-11T15:17:55.806Z
+Fichier source: C:\Users\ascolan\Documents\Workspace\DNS2Mermaid\tests\email-validation\04_warning_spf_too_many_lookups.csv
+Domaines analysés: 3
+Violations détectées: 6
+
+🚨 Violations BLOQUANTES (CRITICAL): 0
+⚠️  Problèmes à corriger (WARNING): 2
+ℹ️  Bonnes pratiques (INFO): 4
+
+📊 BILAN PAR RÈGLE:
+
+   ℹ️ MISSING_IPV6: 2 violation(s)
+   ⚠️ SPF_TOO_MANY_LOOKUPS: 1 violation(s)
+   ⚠️ MX_NOT_IN_SPF: 1 violation(s)
+   ℹ️ DKIM_MISSING: 1 violation(s)
+   ℹ️ AUTODISCOVER_MISSING: 1 violation(s)
+
+───────────────────────────────────────────────────────────
+
+
+⚠️  PROBLÈMES À CORRIGER RAPIDEMENT:
+
+1. [SPF_TOO_MANY_LOOKUPS] too-many-lookups.com
+   SPF avec 11 lookups DNS (limite RFC 7208: 10) - Risque PermError
+   Référence: RFC 7208 Section 4.6.4
+   Enregistrements affectés: TXT v=spf1 include:_spf1.google.com include:_spf2.google.com include:_spf3.google.com include:_spf4.google.com include:_spf5.google.com include:_spf6.google.com include:_spf7.google.com include:_spf8.google.com include:_spf9.google.com include:_spf10.google.com include:_spf11.google.com -all
+
+2. [MX_NOT_IN_SPF] too-many-lookups.com
+   Serveurs MX (mail.too-many-lookups.com) absents du SPF dans la vue 'ext' - Risque de rejet email
+   Référence: RFC 7208 Section 5.4 (mx mechanism)
+   Enregistrements affectés: MX 10 mail.too-many-lookups.com
+
+
+ℹ️  RECOMMANDATIONS (BONNES PRATIQUES):
+
+1. [MISSING_IPV6] too-many-lookups.com
+   Enregistrement A sans AAAA correspondant (bonne pratique: supporter IPv6)
+   Référence: Bonne pratique : RFC 8200 (IPv6 Specification)
+   Enregistrements affectés: A 203.0.113.10
+
+2. [MISSING_IPV6] mail.too-many-lookups.com
+   Enregistrement A sans AAAA correspondant (bonne pratique: supporter IPv6)
+   Référence: Bonne pratique : RFC 8200 (IPv6 Specification)
+   Enregistrements affectés: A 203.0.113.20
+
+3. [DKIM_MISSING] too-many-lookups.com
+   Pas de DKIM détecté - Recommandé pour l'authentification email
+   Référence: RFC 6376 (Bonne pratique)
+   Enregistrements affectés: MX 10 mail.too-many-lookups.com
+
+4. [AUTODISCOVER_MISSING] too-many-lookups.com
+   Pas d'autodiscover/autoconfig - Configuration manuelle requise pour clients email
+   Référence: Bonne pratique (Exchange/Office365/Thunderbird)
+   Enregistrements affectés: MX 10 mail.too-many-lookups.com
+
+
+───────────────────────────────────────────────────────────
+RÈGLES VALIDÉES (27 règles (19 DNS + 10 Email), 3 niveaux):
+
+🚨 BLOQUANTES (CRITICAL) - Violations RFC:
+1. CNAME_COEXISTENCE: Un CNAME ne peut coexister avec d'autres types (RFC 1034)
+2. CNAME_ON_APEX: CNAME interdit sur zone apex/domaine racine (RFC 1912)
+3. CNAME_LOOP: Un CNAME ne peut pointer vers lui-même
+4. MX_TO_CNAME: Les MX ne peuvent pointer vers des CNAMEs (RFC 2181)
+5. NS_TO_CNAME: Les NS ne peuvent pointer vers des CNAMEs (RFC 2181)
+6. MX_NO_GLUE / NS_NO_GLUE: MX/NS doivent pointer vers noms avec A/AAAA
+7. SPF_TOO_PERMISSIVE: SPF avec +all autorise tout le monde
+8. SPF_ALL_PERMISSIVE: SPF avec +all (email validation)
+9. DMARC_MISSING_WITH_PUBLIC_MX: DMARC manquant avec MX publics
+
+⚠️  IMPORTANTES (WARNING) - À corriger rapidement:
+10. CNAME_CHAIN: Les CNAMEs chaînés dégradent les performances (RFC 2181)
+11. INCONSISTENT_TTL: TTL incohérents causent comportement imprévisible
+12. TTL_TOO_SHORT: TTL < 60s génère une charge DNS excessive
+13. SPF_NEUTRAL: SPF avec ?all offre peu de protection
+14. MX_ORPHAN / NS_ORPHAN: Pointe vers un nom non résolu
+15. VIEW_SEGREGATION_PRIVATE_EXTERNAL: IP privée RFC 1918 exposée en vue externe
+16. SPF_TOO_MANY_LOOKUPS: SPF avec >10 lookups DNS
+17. MX_NOT_IN_SPF: Serveurs MX absents du SPF
+18. DKIM_INVALID_FORMAT: Format DKIM invalide
+19. DKIM_WEAK_KEY: Clé RSA <1024 bits
+20. DMARC_NO_REPORTING: Pas d'adresse rua/ruf
+
+ℹ️  RECOMMANDATIONS (INFO) - Bonnes pratiques:
+25. MISSING_IPV6: Enregistrement A sans AAAA (moderniser)
+26. TTL_TOO_LONG: TTL > 86400s rend les changements lents
+27. WILDCARD_RESTRICTION: Attention wildcards avec certains types
+28. DUPLICATE_RECORD: Enregistrements identiques redondants
+29. CNAME_ORPHAN: CNAME pointe vers un nom absent du dataset (vérifier si externe)
+30. INCONSISTENT_TTL_MULTIVIEW: Même enregistrement avec TTL différents selon les vues
+31. DMARC_POLICY_NONE: DMARC en mode monitoring (p=none)
+32. DKIM_MISSING: Pas de DKIM détecté
+33. AUTODISCOVER_MISSING: Pas d'autodiscover/autoconfig

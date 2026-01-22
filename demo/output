@@ -1,0 +1,100 @@
+---
+config:
+  flowchart:
+    htmlLabels: true
+    curve: basis
+    padding: 25
+    diagramPadding: 8
+    wrappingWidth: 200
+    rankSpacing: 50
+    nodeSpacing: 50
+    useMaxWidth: false
+---
+flowchart LR
+    classDef internal fill:#b3d9ff,stroke:#0066cc,stroke-width:2px,color:black;
+    classDef external fill:#b3ffb3,stroke:#006600,stroke-width:1px,color:black;
+    classDef both fill:#d9b3ff,stroke:#8800cc,stroke-width:2px,color:black;
+    classDef target fill:#f9f9f9,stroke:#999,stroke-dasharray: 5 5;
+    classDef legendBox fill:#fafafa,stroke:#333,stroke-width:1px,color:black;
+    classDef critical fill:#ffe0e0,stroke:#ff0000,stroke-width:5px,color:black,stroke-dasharray: 10 5;
+    classDef internalWarning fill:#b3d9ff,stroke:#ff8800,stroke-width:4px,color:black;
+    classDef externalWarning fill:#b3ffb3,stroke:#ff8800,stroke-width:4px,color:black;
+    classDef bothWarning fill:#d9b3ff,stroke:#ff8800,stroke-width:4px,color:black;
+    classDef internalInfo fill:#b3d9ff,stroke:#ccaa00,stroke-width:3px,color:black,stroke-dasharray: 5 5;
+    classDef externalInfo fill:#b3ffb3,stroke:#ccaa00,stroke-width:3px,color:black,stroke-dasharray: 5 5;
+    classDef bothInfo fill:#d9b3ff,stroke:#ccaa00,stroke-width:3px,color:black,stroke-dasharray: 5 5;
+    classDef ipNode fill:#e8e8e8,stroke:#666,stroke-width:2px,color:black;
+    classDef ipPrivate fill:#b3d9ff,stroke:#0066cc,stroke-width:2px,color:black;
+    classDef ipPublic fill:#b3ffb3,stroke:#006600,stroke-width:2px,color:black;
+    classDef sslValid fill:#d4edda,stroke:#28a745,stroke-width:2px,color:black;
+    classDef sslWarning fill:#fff3cd,stroke:#ffc107,stroke-width:3px,color:black;
+    classDef sslCritical fill:#f8d7da,stroke:#dc3545,stroke-width:4px,color:black;
+    classDef sslError fill:#e2e3e5,stroke:#6c757d,stroke-width:2px,color:black,stroke-dasharray: 5 5;
+    classDef leakedExternal fill:#ffebee,stroke:#e91e63,stroke-width:4px,color:black;
+    classDef httpStatusOk fill:#c8e6c9,stroke:#2e7d32,stroke-width:1px,color:#000,font-size:9px;
+    classDef httpStatusRedirect fill:#fff9c4,stroke:#f57c00,stroke-width:1px,color:#000,font-size:9px;
+    classDef httpStatusError fill:#ffccbc,stroke:#d84315,stroke-width:1px,color:#000,font-size:9px;
+    classDef httpStatusKo fill:#ffebee,stroke:#c62828,stroke-width:1px,color:#000,font-size:9px;
+    classDef emailDerived fill:#fff9e6,stroke:#ff9800,stroke-width:1px,color:black,stroke-dasharray: 3 3;
+
+    subgraph sg_acme_corp_com ["**acme#8209;corp&period;com**"]
+        direction TB
+        node_acme_corp_com_A_198_5_3600_1["<b>A</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;|&nbsp;198.51.100.10&nbsp;|&nbsp;TTL:3600"]:::external
+        node_acme_corp_com_MX_10_ma_3600_2["<b>MX</b>&nbsp;|&nbsp;10&nbsp;mail.acme-corp.com&nbsp;|&nbsp;TTL:3600"]:::external
+        node_acme_corp_com_NS_ns1_a_3600_3["<b>NS</b>&nbsp;|&nbsp;ns1.acme-corp.com&nbsp;|&nbsp;TTL:3600"]:::external
+        node_acme_corp_com_TXT_v_spf_3600_4["<b>TXT</b>&nbsp;|&nbsp;v=spf1&nbsp;mx&nbsp;ip4:198.51.100.0/24&nbsp;-all&nbsp;|&nbsp;TTL:3600"]:::external
+        subgraph sg__dmarc_acme_corp_com ["🛡️&nbsp;&lowbar;dmarc&period;acme#8209;corp&period;com"]
+            direction TB
+            node__dmarc_acme_corp_com_TXT_v_DMA_3600_11["<b>TXT</b>&nbsp;|&nbsp;v=DMARC1;&nbsp;p=quarantine;&nbsp;rua=mailto:dmarc@acme-corp.com&nbsp;|&nbsp;TTL:3600"]:::external
+        end
+        style sg__dmarc_acme_corp_com fill:#fff9e6,stroke:#ff9800,stroke-width:1px,color:#000,stroke-dasharray: 3 3
+    end
+    style sg_acme_corp_com fill:#ffffff,stroke:#999,stroke-width:1px,color:#000
+    subgraph sg_www_acme_corp_com ["**www&period;acme#8209;corp&period;com**"]
+        direction TB
+        node_www_acme_corp_com_CNAME_acme__3600_5["<b>CNAME</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;|&nbsp;acme-corp.com&nbsp;|&nbsp;TTL:3600"]:::external
+    end
+    style sg_www_acme_corp_com fill:#ffffff,stroke:#999,stroke-width:1px,color:#000
+    subgraph sg_blog_acme_corp_com ["**blog&period;acme#8209;corp&period;com**"]
+        direction TB
+        node_blog_acme_corp_com_CNAME_www_a_3600_6["<b>CNAME</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;|&nbsp;www.acme-corp.com&nbsp;|&nbsp;TTL:3600"]:::external
+    end
+    style sg_blog_acme_corp_com fill:#ffffff,stroke:#999,stroke-width:1px,color:#000
+    subgraph sg_mail_acme_corp_com ["**mail&period;acme#8209;corp&period;com**"]
+        direction TB
+        node_mail_acme_corp_com_A_198_5_3600_7["<b>A</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;|&nbsp;198.51.100.20&nbsp;|&nbsp;TTL:3600"]:::external
+    end
+    style sg_mail_acme_corp_com fill:#ffffff,stroke:#999,stroke-width:1px,color:#000
+    subgraph sg_ns1_acme_corp_com ["**ns1&period;acme#8209;corp&period;com**"]
+        direction TB
+        node_ns1_acme_corp_com_A_198_5_3600_8["<b>A</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;|&nbsp;198.51.100.30&nbsp;|&nbsp;TTL:3600"]:::external
+    end
+    style sg_ns1_acme_corp_com fill:#ffffff,stroke:#999,stroke-width:1px,color:#000
+    subgraph sg_api_acme_corp_com ["**api&period;acme#8209;corp&period;com**"]
+        direction TB
+        node_api_acme_corp_com_A_10_0__86400_10["<b>A</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;|&nbsp;10.0.1.40&nbsp;|&nbsp;TTL:86400"]:::internal
+        node_api_acme_corp_com_A_198_5_3600_9["<b>A</b>&nbsp;🟥&nbsp;HTTP(S):KO&nbsp;|&nbsp;198.51.100.40&nbsp;|&nbsp;TTL:3600"]:::external
+    end
+    style sg_api_acme_corp_com fill:#ffffff,stroke:#999,stroke-width:1px,color:#000
+
+    %% --- Relations CNAME/MX/NS ---
+    node_acme_corp_com_MX_10_ma_3600_2 -->|MX| node_mail_acme_corp_com_A_198_5_3600_7
+    node_acme_corp_com_NS_ns1_a_3600_3 -->|NS| node_ns1_acme_corp_com_A_198_5_3600_8
+    node_www_acme_corp_com_CNAME_acme__3600_5 -->|CNAME| sg_acme_corp_com
+    node_blog_acme_corp_com_CNAME_www_a_3600_6 -->|CNAME| sg_www_acme_corp_com
+
+    %% --- Nœuds IP ---
+    subgraph ip_cluster ["🌐 Adresses IP"]
+        direction LR
+        node_IP_198_51_100_10[["🌐&nbsp;<b>IPv4</b>&nbsp;Publique&nbsp;|&nbsp;198.51.100.10&nbsp;|&nbsp;1×utilisé"]]:::ipPublic
+        node_IP_198_51_100_20[["🌐&nbsp;<b>IPv4</b>&nbsp;Publique&nbsp;|&nbsp;198.51.100.20&nbsp;|&nbsp;1×utilisé"]]:::ipPublic
+        node_IP_198_51_100_30[["🌐&nbsp;<b>IPv4</b>&nbsp;Publique&nbsp;|&nbsp;198.51.100.30&nbsp;|&nbsp;1×utilisé"]]:::ipPublic
+        node_IP_198_51_100_40[["🌐&nbsp;<b>IPv4</b>&nbsp;Publique&nbsp;|&nbsp;198.51.100.40&nbsp;|&nbsp;1×utilisé"]]:::ipPublic
+        node_IP_10_0_1_40[["🔒&nbsp;<b>IPv4</b>&nbsp;Privée&nbsp;|&nbsp;10.0.1.40&nbsp;|&nbsp;1×utilisé"]]:::ipPrivate
+    end
+    style ip_cluster fill:#f9f9f9,stroke:#999,stroke-width:1px,stroke-dasharray: 3 3,color:#000
+    node_acme_corp_com_A_198_5_3600_1 -->|resolves| node_IP_198_51_100_10
+    node_mail_acme_corp_com_A_198_5_3600_7 -->|resolves| node_IP_198_51_100_20
+    node_ns1_acme_corp_com_A_198_5_3600_8 -->|resolves| node_IP_198_51_100_30
+    node_api_acme_corp_com_A_198_5_3600_9 -->|resolves| node_IP_198_51_100_40
+    node_api_acme_corp_com_A_10_0__86400_10 -->|resolves| node_IP_10_0_1_40

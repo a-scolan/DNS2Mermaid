@@ -1,0 +1,16 @@
+TTL,Name,Type,Value,View
+3600,app.company.com,CNAME,cdn.external-provider.com,ext
+3600,app.company.com,A,10.0.1.5,int
+3600,app.company.com,AAAA,fc00::1:5,int
+7200,api.company.com,A,203.0.113.50,ext
+7200,api.company.com,A,10.0.1.20,int
+7200,api.company.com,AAAA,2001:db8::50,ext
+7200,api.company.com,AAAA,fc00::1:20,int
+86400,mail.company.com,MX,10 mail-in.company.com,ext
+86400,mail.company.com,MX,10 mail-in-internal.company.com,int
+3600,mail-in.company.com,A,203.0.113.100,ext
+3600,mail-in.company.com,AAAA,2001:db8::100,ext
+3600,mail-in.company.com,A,10.0.1.100,int
+3600,mail-in.company.com,AAAA,fc00::1:100,int
+3600,mail-in-internal.company.com,A,10.0.1.101,int
+3600,mail-in-internal.company.com,AAAA,fc00::1:101,int

@@ -1,0 +1,6 @@
+TTL,Name,Type,Value,View
+3600,no-dkim.com,A,203.0.113.10,ext
+3600,no-dkim.com,MX,10 mail.no-dkim.com,ext
+3600,no-dkim.com,TXT,"v=spf1 mx -all",ext
+3600,mail.no-dkim.com,A,203.0.113.20,ext
+3600,_dmarc.no-dkim.com,TXT,"v=DMARC1; p=quarantine; rua=mailto:dmarc@no-dkim.com",ext

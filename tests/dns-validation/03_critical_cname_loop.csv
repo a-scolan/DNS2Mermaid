@@ -1,0 +1,6 @@
+# Test 03 : CNAME_LOOP - Boucle directe (auto-référence)
+# CNAME pointe vers lui-même = VIOLATION CRITIQUE
+# Résultat attendu : 1 violation CRITICAL CNAME_LOOP
+
+TTL,Name,Type,Value,View
+3600,loop.example.com,CNAME,loop.example.com,ext

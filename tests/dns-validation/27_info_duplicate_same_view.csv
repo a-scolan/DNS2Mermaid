@@ -1,0 +1,8 @@
+# Test 27 : DUPLICATE_RECORD info (Note: les duplicatas exacts sont fusionnés au parsing)
+# Lors du parsing, les doublons exacts sont automatiquement supprimés
+# Ce test vérifie qu'il n'y a pas de faux positifs sur un enregistrement simple
+# Résultat attendu : Aucune violation critique (peut déclencher MISSING_IPV6)
+
+view,rrName,rrType,rrTtl,rrValue
+ext,www.company.com,A,3600,203.0.113.100
+ext,www.company.com,AAAA,3600,2001:db8::100

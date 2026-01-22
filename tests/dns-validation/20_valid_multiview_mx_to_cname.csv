@@ -1,0 +1,12 @@
+# Test 20 : MX_TO_CNAME valide en multi-view
+# MX en vue ext pointe vers CNAME en vue int seulement = VALIDE (vues différentes)
+# Résultat attendu : AUCUNE violation MX_TO_CNAME
+
+view,rrName,rrType,rrTtl,rrValue
+ext,mail.company.com,MX,3600,10 mail-ext.provider.net
+int,mail-ext.provider.net,CNAME,3600,mx1.provider.net
+ext,mail-ext.provider.net,A,3600,203.0.113.100
+ext,mail-ext.provider.net,AAAA,3600,2001:db8::1
+int,mail.company.com,MX,3600,10 mail-int.internal
+int,mail-int.internal,A,3600,10.0.1.10
+int,mail-int.internal,AAAA,3600,fd00::10

@@ -1,0 +1,116 @@
+═══════════════════════════════════════════════════════════
+           RAPPORT DE VALIDATION DNS RFC
+              & CERTIFICATS SSL/TLS
+═══════════════════════════════════════════════════════════
+
+Date: 2025-12-12T07:51:17.748Z
+Fichier source: demo/demo_complete.csv
+Domaines analysés: 7
+Violations détectées: 6
+
+CERTIFICATS SSL/TLS VÉRIFIÉS: 6
+🟢 OK (>21j): 1
+⚠️  WARNING (7-21j): 0
+🚨 CRITICAL (<7j): 0
+❌ ERREURS: 4
+
+🚨 Violations BLOQUANTES (CRITICAL): 0
+⚠️  Problèmes à corriger (WARNING): 2
+ℹ️  Bonnes pratiques (INFO): 4
+
+📊 BILAN PAR RÈGLE:
+
+   ℹ️ MISSING_IPV6: 4 violation(s)
+   ⚠️ CNAME_CHAIN: 1 violation(s)
+   ⚠️ INCONSISTENT_TTL: 1 violation(s)
+
+───────────────────────────────────────────────────────────
+
+
+⚠️  PROBLÈMES À CORRIGER RAPIDEMENT:
+
+1. [CNAME_CHAIN] blog.acme-corp.com
+   CNAME pointe vers un autre CNAME (www.acme-corp.com -> acme-corp.com)
+   Référence: RFC 2181 Section 10.1 (Performance)
+   Enregistrements affectés: CNAME www.acme-corp.com
+
+2. [INCONSISTENT_TTL] api.acme-corp.com
+   TTL incohérents pour les enregistrements A/AAAA (3600, 86400)
+   Référence: RFC 1035 Section 3.2.1 (Cache DNS)
+   Enregistrements affectés: A 198.51.100.40, A 10.0.1.40
+
+
+ℹ️  RECOMMANDATIONS (BONNES PRATIQUES):
+
+1. [MISSING_IPV6] acme-corp.com
+   Enregistrement A sans AAAA correspondant (bonne pratique: supporter IPv6)
+   Référence: Bonne pratique : RFC 8200 (IPv6 Specification)
+   Enregistrements affectés: A 198.51.100.10
+
+2. [MISSING_IPV6] mail.acme-corp.com
+   Enregistrement A sans AAAA correspondant (bonne pratique: supporter IPv6)
+   Référence: Bonne pratique : RFC 8200 (IPv6 Specification)
+   Enregistrements affectés: A 198.51.100.20
+
+3. [MISSING_IPV6] ns1.acme-corp.com
+   Enregistrement A sans AAAA correspondant (bonne pratique: supporter IPv6)
+   Référence: Bonne pratique : RFC 8200 (IPv6 Specification)
+   Enregistrements affectés: A 198.51.100.30
+
+4. [MISSING_IPV6] api.acme-corp.com
+   Enregistrement A sans AAAA correspondant (bonne pratique: supporter IPv6)
+   Référence: Bonne pratique : RFC 8200 (IPv6 Specification)
+   Enregistrements affectés: A 198.51.100.40, A 10.0.1.40
+
+
+───────────────────────────────────────────────────────────
+RÈGLES VALIDÉES (19 règles, 3 niveaux):
+
+🚨 BLOQUANTES (CRITICAL) - Violations RFC:
+1. CNAME_COEXISTENCE: Un CNAME ne peut coexister avec d'autres types (RFC 1034)
+2. CNAME_ON_APEX: CNAME interdit sur zone apex/domaine racine (RFC 1912)
+3. CNAME_LOOP: Un CNAME ne peut pointer vers lui-même
+4. MX_TO_CNAME: Les MX ne peuvent pointer vers des CNAMEs (RFC 2181)
+5. NS_TO_CNAME: Les NS ne peuvent pointer vers des CNAMEs (RFC 2181)
+6. MX_NO_GLUE / NS_NO_GLUE: MX/NS doivent pointer vers noms avec A/AAAA
+7. SPF_TOO_PERMISSIVE: SPF avec +all autorise tout le monde
+
+⚠️  IMPORTANTES (WARNING) - À corriger rapidement:
+8. CNAME_CHAIN: Les CNAMEs chaînés dégradent les performances (RFC 2181)
+9. INCONSISTENT_TTL: TTL incohérents causent comportement imprévisible
+10. TTL_TOO_SHORT: TTL < 60s génère une charge DNS excessive
+11. SPF_NEUTRAL: SPF avec ?all offre peu de protection
+12. MX_ORPHAN / NS_ORPHAN: Pointe vers un nom non résolu
+13. VIEW_SEGREGATION_PRIVATE_EXTERNAL: IP privée RFC 1918 exposée en vue externe
+
+ℹ️  RECOMMANDATIONS (INFO) - Bonnes pratiques:
+14. MISSING_IPV6: Enregistrement A sans AAAA (moderniser)
+15. TTL_TOO_LONG: TTL > 86400s rend les changements lents
+16. WILDCARD_RESTRICTION: Attention wildcards avec certains types
+17. DUPLICATE_RECORD: Enregistrements identiques redondants
+18. CNAME_ORPHAN: CNAME pointe vers un nom absent du dataset (vérifier si externe)
+19. INCONSISTENT_TTL_MULTIVIEW: Même enregistrement avec TTL différents selon les vues
+
+═══════════════════════════════════════════════════════════
+            CERTIFICATS SSL/TLS À RENOUVELER
+═══════════════════════════════════════════════════════════
+
+
+❌ ERREURS DE CONNEXION SSL:
+
+1. blog.acme-corp.com
+   Erreur: getaddrinfo ENOTFOUND blog.acme-corp.com
+   Vérifié depuis: blog.acme-corp.com
+
+2. mail.acme-corp.com
+   Erreur: getaddrinfo ENOTFOUND mail.acme-corp.com
+   Vérifié depuis: mail.acme-corp.com
+
+3. ns1.acme-corp.com
+   Erreur: getaddrinfo ENOTFOUND ns1.acme-corp.com
+   Vérifié depuis: ns1.acme-corp.com
+
+4. api.acme-corp.com
+   Erreur: getaddrinfo ENOTFOUND api.acme-corp.com
+   Vérifié depuis: api.acme-corp.com
+

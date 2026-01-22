@@ -1,0 +1,5 @@
+TTL,Name,Type,Value,View
+3600,duplicate.com,A,203.0.113.10,ext
+3600,duplicate.com,TXT,"v=spf1 mx -all",ext
+3600,duplicate.com,TXT,"v=spf1 mx -all",ext
+3600,duplicate.com,AAAA,2001:db8::1,ext

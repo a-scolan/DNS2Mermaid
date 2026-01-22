@@ -1,0 +1,5 @@
+# Test : Résolution HTTP/HTTPS avec codes 200
+# Domaine avec A, répondant en HTTP et HTTPS
+# Utilisation de google.com qui répond toujours
+View,Name,Type,TTL,Value
+ext,google.com,A,3600,142.250.74.206

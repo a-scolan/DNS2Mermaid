@@ -1,0 +1,8 @@
+TTL,Name,Type,Value,View
+3600,invalid-dkim.com,A,203.0.113.10,ext
+3600,invalid-dkim.com,MX,10 mail.invalid-dkim.com,ext
+3600,invalid-dkim.com,TXT,"v=spf1 mx -all",ext
+3600,mail.invalid-dkim.com,A,203.0.113.20,ext
+3600,selector1._domainkey.invalid-dkim.com,TXT,"k=rsa; p=",ext
+3600,selector2._domainkey.invalid-dkim.com,TXT,"v=DKIM1; p=",ext
+3600,_dmarc.invalid-dkim.com,TXT,"v=DMARC1; p=quarantine; rua=mailto:dmarc@invalid-dkim.com",ext
